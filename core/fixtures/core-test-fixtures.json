@@ -1,0 +1,295 @@
+[
+    {
+        "pk": 69,
+        "model": "core.orggroup",
+        "fields": {
+            "description": null,
+            "parent": null,
+            "title": "Lorem"
+        }
+    },
+    {
+        "pk": 75,
+        "model": "core.orggroup",
+        "fields": {
+            "description": null,
+            "parent": null,
+            "title": "Ipsum"
+        }
+    },
+    {
+        "pk": 81,
+        "model": "core.orggroup",
+        "fields": {
+            "description": null,
+            "parent": null,
+            "title": "Dolor"
+        }
+    },
+    {
+        "pk": 91,
+        "model": "core.orggroup",
+        "fields": {
+            "description": null,
+            "parent": 75,
+            "title": "Sit"
+        }
+    },
+    {
+        "pk": 93,
+        "model": "core.orggroup",
+        "fields": {
+            "description": null,
+            "parent": 75,
+            "title": "Amet"
+        }
+    },
+    {
+        "pk": "DC123",
+        "model": "core.officelocation",
+        "fields": {
+            "suite": "",
+            "state": "DC",
+            "street": "123 Pennsylvania ave",
+            "zip": "20552",
+            "city": "Washington"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "test1@example.com",
+            "first_name": "John",
+            "last_name": "Smith",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2012-08-28T14:11:00Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$ggAKkiHobFL8$xQzwPeHNX1vWr9uNmZ/gKbd17uLGZVM8QNcgmaIEAUs=",
+            "email": "test1.1@example.com",
+            "date_joined": "2012-03-01T16:03:14Z"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.user",
+        "fields": {
+            "username": "test2@example.com",
+            "first_name": "Sara",
+            "last_name": "Smith",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": true,
+            "last_login": "2012-03-01T16:34:27Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$055f5$0d02cf644059c99d3b2291acf4912567acb97baf",
+            "email": "test2@example.com",
+            "date_joined": "2012-03-01T16:34:27Z"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.user",
+        "fields": {
+            "username": "test3@example.com",
+            "first_name": "Beth",
+            "last_name": "Santos",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": true,
+            "last_login": "2012-03-01T16:37:00Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$9f0d7$29e1fb5a2d3def585d12eb9cd1959a329d99d36d",
+            "email": "beth.smith@example.com",
+            "date_joined": "2012-03-01T16:34:40Z"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "auth.user",
+        "fields": {
+            "username": "admin@example.com",
+            "first_name": "Admin",
+            "last_name": "Gal",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2012-03-01T16:37:45Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$90708$8c20cac5c542bd8456d3263c378be5db03e76cb1",
+            "email": "admin.gal@example.com",
+            "date_joined": "2012-03-01T16:34:54Z"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "core.person",
+        "fields": {
+            "what_i_do": "",
+            "mobile_phone": "",
+            "office_location": "DC123",
+            "desk_location": "",
+            "title": "djangonaut",
+            "schools_i_attended": "",
+            "allow_tagging": true,
+            "photo_file": "avatars/default.jpg",
+            "current_projects": "",
+            "stub": "test1",
+            "office_phone": "5555555555",
+            "stuff_ive_done": "",
+            "user": [
+                "test1@example.com"
+            ],
+            "home_phone": "",
+            "org_group": null,
+            "things_im_good_at": "",
+            "email_notifications": false,
+            "updated_at": "2012-03-01T11:34:54Z"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "core.person",
+        "fields": {
+            "what_i_do": null,
+            "mobile_phone": "",
+            "office_location": "DC123",
+            "desk_location": null,
+            "title": "Accountant",
+            "schools_i_attended": null,
+            "allow_tagging": true,
+            "photo_file": "avatars/default.jpg",
+            "current_projects": null,
+            "stub": "test3",
+            "office_phone": "5559991111",
+            "stuff_ive_done": null,
+            "user": [
+                "test3@example.com"
+            ],
+            "home_phone": null,
+            "org_group": 69,
+            "things_im_good_at": null,
+            "email_notifications": false,
+            "updated_at": "2012-03-01T11:34:54Z"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "core.person",
+        "fields": {
+            "what_i_do": null,
+            "mobile_phone": "",
+            "office_location": "DC123",
+            "desk_location": null,
+            "title": "administrator",
+            "schools_i_attended": null,
+            "allow_tagging": true,
+            "photo_file": "avatars/default.jpg",
+            "current_projects": null,
+            "stub": "admin",
+            "office_phone": "5551115555",
+            "stuff_ive_done": null,
+            "user": [
+                "admin@example.com"
+            ],
+            "home_phone": null,
+            "org_group": 75,
+            "things_im_good_at": null,
+            "email_notifications": false,
+            "updated_at": "2012-03-01T11:34:54Z"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "taggit.tag",
+        "fields": {
+            "name": "Outstanding",
+            "slug": "outstanding"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "taggit.tag",
+        "fields": {
+            "name": "Wonderful",
+            "slug": "wonderful"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "taggit.tagcategory",
+        "fields": {
+            "name": "My Expertise",
+            "slug": "staff-directory-my-expertise"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "taggit.tagcategory",
+        "fields": {
+            "name": "My Projects",
+            "slug": "staff-directory-my-projects"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "taggit.tagcategory",
+        "fields": {
+            "name": "Other Things",
+            "slug": "staff-directory-other-things"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "taggit.taggeditem",
+        "fields": {
+            "tag_creator": null,
+            "tag": 1,
+            "object_id": 1,
+            "content_type": [
+                "core",
+                "person"
+            ],
+            "create_timestamp": "2012-08-28T14:08:53Z",
+            "tag_category": null
+        }
+    },
+    {
+        "pk": 2,
+        "model": "taggit.taggeditem",
+        "fields": {
+            "tag_creator": null,
+            "tag": 2,
+            "object_id": 1,
+            "content_type": [
+                "core",
+                "person"
+            ],
+            "create_timestamp": "2012-08-28T14:08:53Z",
+            "tag_category": null
+        }
+    },
+    {
+        "pk": 3,
+        "model": "taggit.taggeditem",
+        "fields": {
+            "tag_creator": [
+                "test1@example.com"
+            ],
+            "tag": 2,
+            "object_id": 1,
+            "content_type": [
+                "core",
+                "person"
+            ],
+            "create_timestamp": "2012-08-28T14:32:08Z",
+            "tag_category": 1
+        }
+    }
+]

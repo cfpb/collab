@@ -1,0 +1,110 @@
+{% load ifinstalled %}
+{% load compressed %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>collab - {% block "title" %}{{ title }}{% endblock %}</title>
+
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/static/images/favicon.ico">
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/fonts.css">
+
+    {% compressed_css "base" %}
+
+    <style>
+        {% block "style" %}{% endblock %}
+    </style>
+    {% block "css_files" %}{% endblock %}
+
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/ie8.css">
+    <![endif]-->
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/print.css" media="print">
+
+    <!--[if lt IE 9]>
+        <script src="{{ STATIC_URL }}js/html5shiv-printshiv.js"></script>
+    <![endif]-->
+
+    {% block "js_head_scripts" %}{% endblock %}
+</head>
+
+<body class="{% block "section_id" %}home{% endblock %}">
+
+    <div class="wrap">
+    <header>
+        <h1><a href="{% url "core:landing_page" %}" tabindex="1">collab</a></h1>
+        {% block "print_header" %}{% endblock %}
+        {% if not is_registration and user.is_authenticated %}
+            <div class="access" id="user_widget"></div>
+            <div id="notifications_widget"></div>
+        {% endif %}
+    </header>
+
+    {% if not is_registration %}
+        <nav>
+            <div class="inner">
+            <div>
+                <ul>
+                    <li {% if is_front %}class="active" {% endif %}>
+                        <a href="{% url "core:landing_page" %}">Home</a>
+                    </li>
+                    {% ifinstalled 'staff_directory' %}
+                        <li {% if is_staff_directory %}class="active"{% endif %}>
+                            <a href="{% url "staff_directory:index" %}">Directory</a>
+                        </li>
+                    {% endifinstalled %}
+                    {% ifinstalled 'news' %}
+                        <li {% if is_news %}class="active"{% endif %}><a href="{% url "news:list" %}">News</a></li>
+                    {% endifinstalled %}
+                    {% if active_app %}
+                        <li class="active"><a href="{{ app_link }}">{{ active_app }}</a></li>
+                    {% endif %}
+                    <li><a href="#">Tools</a>
+                        <ul>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="search">
+                    <form method="get" action="{% url "search:search_all" %}" id="search-form">
+                        <label for="search">Search collab</label>
+                        <input type="text" id="search" name="term" tabindex="3">
+                        <input type="button" id="search-submit-btn" value="Search" tabindex="4">
+                    </form>
+                </div>
+            </div>
+            </div><!-- /inner -->
+        </nav>
+    {% endif %}
+
+    {% block "content" %}{% endblock %}
+
+    {% include "footer.html" %}
+
+    </div> <!-- /wrap -->
+
+    {% block "override_js_scripts" %}
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    {% compressed_js 'main' %}
+
+    {% block "js_scripts" %}{% endblock %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            {% block "js_ready" %}{% endblock %}
+        });
+    </script>
+    {% endblock %}
+
+</body>
+
+</html>

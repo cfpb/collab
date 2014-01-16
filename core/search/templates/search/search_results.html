@@ -1,0 +1,75 @@
+{% extends "search/base.html" %}
+{% block "content" %}
+<form action="" method="POST" id="submit-form">
+    {% csrf_token %}
+    <div id="content" class="search-results">
+        <div style="width: 80%;">
+            <div>
+                <h1>Search Results for '{{ term }}'</h1>
+                <div style="clear:both">&nbsp;</div>
+            </div>
+
+            <div id="search_accordion">
+
+                {% if not index %}
+                <div class="results-group" data-model="Wiki">
+                    <h3>Wiki <small>(<span id="wiki_count_hook"></span> results)</small></h3>
+                    <ol id="wiki_results_hook"></ol>
+                    <div style="clear:both">&nbsp;</div>
+                </div>
+                {% endif %}
+
+                {% regroup results by index_name as by_index %}
+
+                {% for results_by_index in by_index %}
+                <div class="results-group" data-model="{{ results_by_index.grouper }}">
+                    <h3>{{ results_by_index.grouper }} <small>({{ results_by_index.list|length }} results)</small></h3>
+
+                    {% regroup results_by_index.list by content_type as by_content %}
+                    {% for results_by_content in by_content %}
+                        {% if results_by_content.grouper == 'core.person' %}
+                                <div class="profile_images">
+                                    {% for p in results_by_content.list %}
+                                        <a href="{{ p.url }}">
+                                            <span>{{ p.display }}</span>
+                                            <img class="tiny_photo" src="{{ p.image }}"/></a>
+                                    {% endfor %}
+                                </div>
+                        {% else %}
+                            <ol>
+                                {% for item in results_by_content.list %}
+                                    <li>
+                                        <a name="item_url" href="{{ item.url }}">
+                                            {{ item.display }}
+                                        </a>
+                                        {% if item.description %}
+                                            <p>
+                                                {{ item.description }}
+                                            </p>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        {% endif %}
+                    {% endfor %}
+                    <div style="clear:both;">&nbsp;</div>
+
+                </div>
+                {% endfor %}
+
+            </div>
+            <div style="clear:both">&nbsp;</div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block "js_ready" %}
+    {% include "search/search_results.js" %}
+{% endblock %}
+
+{% block "js_scripts" %}
+<script type="text/javascript">
+    $('[name="item_url"]').each(function(i, el) { tagExternalLink(el) });
+</script>
+{% endblock %}

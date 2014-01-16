@@ -1,0 +1,9 @@
+{{ object.full_name }}
+{{ object.title }}
+{{ object.org_group }}
+{{ object.office_location }}
+{{ object.desk_location }}
+{{ object.what_i_do }}
+{{ object.tags }}
+{{ object.mobile_phone }}
+{{ object.office_phone }}

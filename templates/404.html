@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block "content" %}
+    <div id="content">
+        <h1>This link is broken!</h1>
+        <p>We can't seem to find anything at this address. Please use <a href="{% url "search:index" %}">search</a>
+           or go to the <a href="{% url "core:landing_page" %}">homepage</a>.</p>
+    </div>
+{% endblock %}

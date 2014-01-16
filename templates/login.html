@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block "title" %}Sign In{% endblock %}
+
+{% block "content" %}
+<div id="content">
+<div class="span12">
+<h2>Sign In</h2>
+<form action="{% url "login" %}" method="post">{% csrf_token %}
+	{{ form.as_p }}
+	<input type="hidden" name="next" value="{{ next }}">
+	<p><input type="submit" value="Sign In"></p>
+	<p>Don't have an account?  You can <a href="{% url "core:register" %}">register for one here.</a> </p>
+</form>
+</div>
+</div>
+{% endblock %}

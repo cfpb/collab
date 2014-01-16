@@ -1,0 +1,50 @@
+/* ==========================================================================
+   cfpb.local
+   @font-face style overrides for IE8
+   ========================================================================== */
+
+/* Weight overrides */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+th,
+legend,
+dt,
+.wrap > nav,
+.notification-counter,
+.section-nav a,
+.profile > ul span,
+.directory .tag_name,
+.news .meta,
+.tags a,
+label.error,
+.resource-library .input_right label,
+#form-builder h2 b,
+#form-builder .help-inline strong,
+#form-builder .add-field,
+#form-builder .form-container label,
+#form-builder .control-label,
+#form-builder .ui-datepicker-header,
+#form-builder span.required,
+#form-builder .asteriskField {
+    font-weight: normal !important;
+}
+
+/* Italic overrides */
+.notification p span,
+a.edit-bookmarks,
+.instructions,
+.help-block,
+.help-inline,
+.resource-library .help_text span {
+    font-style: normal !important;
+}
+
+.span_main {
+    display: block;
+    float: right;
+    zoom: 1;
+}

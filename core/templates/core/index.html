@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load cache %}
+{% load widgeter %}
+
+{% block "title" %}Intranet{% endblock %}
+
+{% block "content" %}
+<div id="content">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+<div class="row">
+
+
+<div class="span_side right bookmarks">
+    {% widget_block "home_side" current_user %}
+</div>
+
+<div class="span_main right">
+    {% if alert %}
+        <div class="alert">
+            <h1>{{ alert.title }}</h1>
+            <p>{{ alert.content }}</p>
+        </div>
+    {% endif %}
+  <div class="feed">
+    {% widget_block "home" current_user %}
+  </div><!-- /feed -->
+</div><!-- /span8 -->
+</div><!-- /row -->
+</div>
+{% endblock %}
+
+{% block "js_ready" %}
+{% endblock %}
