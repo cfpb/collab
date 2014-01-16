@@ -1,0 +1,28 @@
+<div id="search">
+
+    <h2>Search the Handbook</h2>
+
+    <form action="." method="get">
+        <input type="text" id="search-query" name="q" placeholder="Start typing here and results will pop up" autocomplete="off">
+    </form>
+
+    <a class="clear-search" title="Clear search">&times;</a>
+
+    <section id="search-results">
+        <h3>Results</h3>
+        <div class="entries">
+            <!-- Search results will be injected into this div -->
+        </div>
+    </section>
+
+{% literal %}
+<script id="search-results-template" type="text/mustache">
+  {{#entries}}
+    <article>
+        <h4><a href="{{href}}">{{title}}</a></h4>
+    </article>
+  {{/entries}}
+</script>
+{% endliteral %}
+
+</div>

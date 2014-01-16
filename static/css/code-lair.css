@@ -1,0 +1,102 @@
+.isotope-item {
+  z-index: 2;
+}
+
+.isotope-hidden.isotope-item {
+  pointer-events: none;
+  z-index: 1;
+}
+
+/**** Isotope CSS3 transitions ****/
+
+.isotope,
+.isotope .isotope-item {
+  -webkit-transition-duration: 0.8s;
+     -moz-transition-duration: 0.8s;
+      -ms-transition-duration: 0.8s;
+       -o-transition-duration: 0.8s;
+          transition-duration: 0.8s;
+}
+
+.isotope {
+  -webkit-transition-property: height, width;
+     -moz-transition-property: height, width;
+      -ms-transition-property: height, width;
+       -o-transition-property: height, width;
+          transition-property: height, width;
+}
+
+.isotope .isotope-item {
+  -webkit-transition-property: -webkit-transform, opacity;
+     -moz-transition-property:    -moz-transform, opacity;
+      -ms-transition-property:     -ms-transform, opacity;
+       -o-transition-property:      -o-transform, opacity;
+          transition-property:         transform, opacity;
+}
+
+/**** disabling Isotope CSS3 transitions ****/
+
+.isotope.no-transition,
+.isotope.no-transition .isotope-item,
+.isotope .isotope-item.no-transition {
+  -webkit-transition-duration: 0s;
+     -moz-transition-duration: 0s;
+      -ms-transition-duration: 0s;
+       -o-transition-duration: 0s;
+          transition-duration: 0s;
+}
+
+/* End: Recommended Isotope styles */
+
+
+
+/* disable CSS transitions for containers with infinite scrolling*/
+.isotope.infinite-scrolling {
+  -webkit-transition: none;
+     -moz-transition: none;
+      -ms-transition: none;
+       -o-transition: none;
+          transition: none;
+}
+
+#container_posters p {
+  font-family: helvetica;
+  line-height: 1.45em;
+  text-decoration: none;
+}
+
+#container_posters{
+  margin: 0px auto;
+  padding-left: 5px;
+}
+.name {
+  font-family: helvetica;
+  margin: 0px;
+  color: #2CB34A;
+  text-transform: uppercase;
+  font-size: 1.1em;
+  font-weight: 700;
+  line-height: 1.4em;
+  margin-bottom: 4px;
+}
+
+.description {
+  color: #000000;
+}
+
+.item {
+  margin-bottom: 30px;
+  margin-right: 30px;
+  background: white;
+  padding: 20px;
+  width: 200px;
+  height: 302px;
+  border-bottom: 10px 
+  -webkit-box-shadow:  0px 5px 20px 0px rgba(0, 0, 0, 0.17);
+  box-shadow:  0px 5px 20px 0px rgba(0, 0, 0, 0.17);
+}
+
+.item img {
+  display: block;
+  margin-bottom: 7px;
+}

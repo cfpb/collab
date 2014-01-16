@@ -1,0 +1,19 @@
+---
+exclude_from_search: true
+---
+{"entries":
+ [
+   {% for page in site.pages %}
+   {% unless page.exclude_from_search %}
+   {
+     "title"    : "{{ page.title }}",
+     "category" : "{{ page.category }}",
+     "tags"     : ["{{ page.tags | join:'","' }}"],
+     "href"     : "{{ page.url | replace:'/', '' }}",
+     "body"     : "{{ page.content | newline_to_br | replace:'<br />', ' ' | strip_html | strip_newlines | replace:'"', "'" | replace:'\', ' ' | replace:'/', ' ' | escape }}"
+   },
+   {% endunless %}
+   {% endfor %}
+   {}
+ ]
+}

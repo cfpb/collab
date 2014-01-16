@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Search - Collab Docs</title>
+    <link rel="stylesheet" href="static/css/normalize.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="static/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <a href="http://consumerfinance.gov"><img class="logo" src="static/img/logo.png" alt="Consumer Financial Protection Bureau"></a>
+        <h1>collab</h1>
+      </div>
+    </header>
+
+  <div class="wrap content">
+
+    <aside>
+      <p class="intro">Collab Documentation</p>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="tagging.html">Tagging</a></li>
+          <li><a href="notifications.html">Notifications</a></li>
+          <li><a href="widgets.html">Widgets</a></li>
+          <li><a href="search.html">Search</a></li>
+          <li><a href="migrations.html">Migrations</a></li>
+          <li><a href="caching.html">Improved Caching</a></li>
+          <li><a href="javascript.html">Javascript Libraries</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <section class="main-content" role="main">
+      <h2 id='search'>Search</h2>
+
+<p>Collab implements <a href='http://haystacksearch.org/'>Haystack</a> and establishes a few conventions, so no commuication is required between the apps and the core.</p>
+
+<p>To show results in the search page and the autocomplete, you need to add a <code>search_indexes.py</code> file.</p>
+
+<h3 id='conventions'>Conventions</h3>
+
+<p>Here are the conventions Collab expects from your app:</p>
+
+<ul>
+<li><code>display</code>: The text to be shown as the title in the search results page.</li>
+
+<li><code>description</code>: The text to be shown as the description in the search results page.</li>
+
+<li><code>index_name</code> (needs prepare): The name of the index.</li>
+
+<li><code>index_priority</code> (needs prepare): Primary search priority.</li>
+
+<li><code>index_sort</code> (needs prepare): Secondary search priority (optional)</li>
+
+<li><code>url</code> (needs prepare): The url of the object you are indexing.</li>
+</ul>
+
+<p>By default, collab uses index_priority to order the individual apps in the search results page. In the example below, index_priority=1 for all Person records to ensure they all appear as a group at the top of the search results.</p>
+
+<p>The secondary field, index_sort, allows an individual app to override haystacks ordering if desired. In the example below, index_sort orders the Person records by last name.</p>
+
+<h2 id='example_'>Example <code>search_indexes.py</code></h2>
+
+<pre><code>from haystack import indexes
+from core.models import Person
+
+
+class PersonIndex(indexes.SearchIndex, indexes.Indexable):
+  text = indexes.EdgeNgramField(document=True, use_template=True)
+  user = indexes.CharField(model_attr=&#39;user&#39;)
+  display = indexes.CharField(model_attr=&#39;full_name&#39;, null=True)
+  description = indexes.CharField(model_attr=&#39;title&#39;, null=True)
+  index_name = indexes.CharField(indexed=False)
+  index_priority = indexes.IntegerField(indexed=False)
+  index_sort = indexes.IntegerField(indexed=False, null=True)
+  url = indexes.CharField(indexed=False, null=True)
+
+  PRIORITY = 1
+
+  def prepare_index_name(self, obj):
+      return &quot;Staff Directory&quot;
+
+  def prepare_index_priority(self, obj):
+      # Return 1 to display Staff Directory as first search result category
+      return self.PRIORITY
+      
+  def prepare_index_sort(self, obj):
+      # sort results by last name
+      for index, item in enumerate(self.index_queryset().order_by(&quot;user__last_name&quot;)):
+          if item.id == obj.id:
+              return index
+
+  def prepare_url(self, obj):
+      return obj.get_absolute_url()
+
+  def get_model(self):
+      return Person
+
+  def index_queryset(self, using=None):
+      &quot;&quot;&quot;Used when the entire index for model is updated.&quot;&quot;&quot;
+      return self.get_model().objects.filter(user__is_active=True)</code></pre>
+    </section>
+
+  <footer>
+    <p>This project is maintained by the<a href="https://github.com/CFPB"><br /> Consumer Financial Protection Bureau.</a></p>
+
+    <p>Hosted on Github Pages</p>
+  </footer>
+
+  </div> <!--./wrap-->
+
+  <script src="static/js/jquery-1.10.2.min.js"></script>
+  </body>
+</html>

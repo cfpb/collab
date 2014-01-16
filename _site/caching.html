@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Introduction - Collab Docs</title>
+    <link rel="stylesheet" href="static/css/normalize.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="static/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <a href="http://consumerfinance.gov"><img class="logo" src="static/img/logo.png" alt="Consumer Financial Protection Bureau"></a>
+        <h1>collab</h1>
+      </div>
+    </header>
+
+  <div class="wrap content">
+
+    <aside>
+      <p class="intro">Collab Documentation</p>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="tagging.html">Tagging</a></li>
+          <li><a href="notifications.html">Notifications</a></li>
+          <li><a href="widgets.html">Widgets</a></li>
+          <li><a href="search.html">Search</a></li>
+          <li><a href="migrations.html">Migrations</a></li>
+          <li><a href="caching.html">Improved Caching</a></li>
+          <li><a href="javascript.html">Javascript Libraries</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <section class="main-content" role="main">
+      <h2 id='improved_caching'>Improved Caching</h2>
+
+<p>Collab uses the <a href='https://pypi.python.org/pypi/django-cache-tools/0.1.1'>django-cache-tools</a> package to improve Django&#8217;s basic caching.</p>
+
+<p>You can find the full documentation for django cache tools here: <a href='http://django-cache-tools.readthedocs.org/en/latest/'>http://django-cache-tools.readthedocs.org/en/latest/</a></p>
+
+<p>The basic tools django-cache-tools provides are:</p>
+
+<ul>
+<li><a href='http://django-cache-tools.readthedocs.org/en/latest/keyable_model.html'>Keyable model</a></li>
+
+<li><a href='http://django-cache-tools.readthedocs.org/en/latest/group_cache.html'>Group Cache</a></li>
+
+<li><a href='http://django-cache-tools.readthedocs.org/en/latest/expire_page.html'>expire_page</a></li>
+</ul>
+
+<p>Here are some basic examples:</p>
+
+<h3 id='keyable_model'>Keyable Model</h3>
+
+<p>Keyable model lets you cache blocks using a caching key to leverage memcached&#8217;s LRU algorithm.</p>
+
+<p>First, make a model that inherits from KeyableModel:</p>
+
+<pre><code>from cache_tools.models import KeyableModel
+# ...
+class Profile(KeyableModel):
+# Your model stuff</code></pre>
+
+<p>Then, pass the cache key to the cache template tag:</p>
+
+<pre><code>{% load cache %}
+{% cache 86400 cache_tools profile.cache_key %}
+    &lt;p&gt;
+        Lots of very time consuming code.
+    &lt;/p&gt;
+{% endcache %}</code></pre>
+
+<h3 id='group_cache'>Group Cache</h3>
+
+<p>To cache a page in a group, you just use the cache_page_in_group decorator:</p>
+
+<pre><code>#views.py
+from cache_tools.tools import cache_page_in_group
+
+@cache_page_in_group(&#39;profiles&#39;)
+def show(req, slug):
+# ...</code></pre>
+
+<p>Or, to cache directly in a template:</p>
+
+<pre><code># cacheable.html
+{% get_group_key group_name as group_key %}
+
+{% cache 600 page_title group_key %}
+&lt;!-- Long running code --&gt;
+{% endcache %}</code></pre>
+
+<p>To expire the group:</p>
+
+<pre><code>from cache_tools.tools import expire_cache_group
+# ...
+expire_cache_group(&#39;profiles&#39;)</code></pre>
+
+<h3 id='expire_page'>expire_page</h3>
+
+<p>If you have a view like:</p>
+
+<pre><code>#views.py
+@cache_page(60 * 10)
+def show(req, slug):
+# ...
+
+#urls.py
+# ...
+url(r&#39;^profile/(?P&lt;stub&gt;.*)/$&#39;, &#39;show&#39;, name=&#39;show_profile&#39;),
+# ...</code></pre>
+
+<p>Then you can use expire_page like:</p>
+
+<pre><code>from cache_tools.tools import expire_page
+# ...
+expire_page(reverse(&#39;show_profile&#39;, args=(stub,)))</code></pre>
+    </section>
+
+  <footer>
+    <p>This project is maintained by the<a href="https://github.com/CFPB"><br /> Consumer Financial Protection Bureau.</a></p>
+
+    <p>Hosted on Github Pages</p>
+  </footer>
+
+  </div> <!--./wrap-->
+
+  <script src="static/js/jquery-1.10.2.min.js"></script>
+  </body>
+</html>

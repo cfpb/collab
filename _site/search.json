@@ -1,0 +1,88 @@
+{"entries":
+ [
+   
+   
+   {
+     "title"    : "Introduction",
+     "category" : "",
+     "tags"     : [""],
+     "href"     : "caching.html",
+     "body"     : "Improved Caching  Collab uses the django-cache-tools package to improve Django&amp;#8217;s basic caching.  You can find the full documentation for django cache tools here: http:  django-cache-tools.readthedocs.org en latest   The basic tools django-cache-tools provides are:   Keyable model  Group Cache  expire_page   Here are some basic examples:  Keyable Model  Keyable model lets you cache blocks using a caching key to leverage memcached&amp;#8217;s LRU algorithm.  First, make a model that inherits from KeyableModel:  from cache_tools.models import KeyableModel # ... class Profile(KeyableModel): # Your model stuff  Then, pass the cache key to the cache template tag:  {% load cache %} {% cache 86400 cache_tools profile.cache_key %}     &amp;lt;p&amp;gt;         Lots of very time consuming code.     &amp;lt; p&amp;gt; {% endcache %}  Group Cache  To cache a page in a group, you just use the cache_page_in_group decorator:  #views.py from cache_tools.tools import cache_page_in_group  @cache_page_in_group(&amp;#39;profiles&amp;#39;) def show(req, slug): # ...  Or, to cache directly in a template:  # cacheable.html {% get_group_key group_name as group_key %}  {% cache 600 page_title group_key %} &amp;lt;!-- Long running code --&amp;gt; {% endcache %}  To expire the group:  from cache_tools.tools import expire_cache_group # ... expire_cache_group(&amp;#39;profiles&amp;#39;)  expire_page  If you have a view like:  #views.py @cache_page(60 * 10) def show(req, slug): # ...  #urls.py # ... url(r&amp;#39;^profile (?P&amp;lt;stub&amp;gt;.*) $&amp;#39;, &amp;#39;show&amp;#39;, name=&amp;#39;show_profile&amp;#39;), # ...  Then you can use expire_page like:  from cache_tools.tools import expire_page # ... expire_page(reverse(&amp;#39;show_profile&amp;#39;, args=(stub,)))"
+   },
+   
+   
+   
+   {
+     "title"    : "Home",
+     "category" : "",
+     "tags"     : [""],
+     "href"     : "index.html",
+     "body"     : "Collab is a Django project with a standard set of configurations to provide services to reusable apps.     Repositories                                         collab          Collab core repo                    Features  Core Collab comes with:          Tagging       Notifications       Widgets       Search       Migrations       Improved Caching       Javascript Libraries        Open Source and Contributing  We invite contributions to any part of the application. The project is in the public domain, and all contributions to it will be released as such. By submitting a pull request, you are agreeing to comply with the following contributor agreement:   I dedicate any and all copyright interest in this software to the public domain. I make this dedication for the benefit of the public at large and to the detriment of my heirs and successors. I intend this dedication to be an overt act of relinquishment in perpetuity of all present and future rights to this software under copyright law.    "
+   },
+   
+   
+   
+   {
+     "title"    : "Javascript Libraries",
+     "category" : "",
+     "tags"     : [""],
+     "href"     : "javascript.html",
+     "body"     : "Javascript Libraries  Collab ships with a standard set of javascript libaries:   jQuery  jQuery datatables "
+   },
+   
+   
+   
+   {
+     "title"    : "Migrations",
+     "category" : "",
+     "tags"     : [""],
+     "href"     : "migrations.html",
+     "body"     : "Migrations  South migrations is implemented in collab.  What is South?  South is a tool to provide consistent, easy-to-use and database-agnostic migrations for Django.  You can read the full documentation at http:  south.readthedocs.org "
+   },
+   
+   
+   
+   {
+     "title"    : "Notifications",
+     "category" : "",
+     "tags"     : [""],
+     "href"     : "notifications.html",
+     "body"     : "Notifications  Collab has a built in notifications system. Basically, any app can send a notification to a user. The notification will show up in the main navigation for the user to read or hide.  To add notifications within an app you just:  from core.notifications.models import Notification from core.notifications.email import EmailInfo  email_info = EmailInfo(   subject=title,   text_template=&amp;#39;path to template.txt&amp;#39;,   html_template=&amp;#39;path to template.html&amp;#39;,   to_address=user.email )  Notification.set_notification(req.user, req.user, &amp;quot;notified&amp;quot;, user_form,                             user_form.owner, title, url, email_info)  Options  set_notification the following parameters (in order):   owner: the user who is creating the notification.  actor: the user who is being referred on the notification.  verb: of what the user is being notified.  obj: the object to which the notification refers.  target: the user who is notified.  title: the title of the notification.  url (optional): the url for the page to which the notification refers.  email_info (optional): the email_info object referring the email to be sent. "
+   },
+   
+   
+   
+   
+   
+   {
+     "title"    : "Search",
+     "category" : "",
+     "tags"     : [""],
+     "href"     : "search.html",
+     "body"     : "## Search   Collab implements [Haystack](http:  haystacksearch.org ) and establishes a few conventions,  so no commuication is required between the apps and the core.  To show results in the search page and the autocomplete, you need to add a `search_indexes.py` file.  ### Conventions  Here are the conventions Collab expects from your app:  * ``display``: The text to be shown as the title in the search results page. * ``description``: The text to be shown as the description in the search results page. * ``index_name`` (needs prepare): The name of the index. * ``index_priority`` (needs prepare): Primary search priority. * ``index_sort`` (needs prepare): Secondary search priority (optional) * ``url`` (needs prepare): The url of the object you are indexing.  By default, collab uses index_priority to order the individual apps in the search results page.  In the example below, index_priority=1 for all Person records to ensure they all appear as a group at the top of the search results.  The secondary field, index_sort, allows an individual app to override haystacks ordering if desired.  In the example below, index_sort orders the Person records by last name.  ## Example ``search_indexes.py``      from haystack import indexes     from core.models import Person       class PersonIndex(indexes.SearchIndex, indexes.Indexable):       text = indexes.EdgeNgramField(document=True, use_template=True)       user = indexes.CharField(model_attr='user')       display = indexes.CharField(model_attr='full_name', null=True)       description = indexes.CharField(model_attr='title', null=True)       index_name = indexes.CharField(indexed=False)       index_priority = indexes.IntegerField(indexed=False)       index_sort = indexes.IntegerField(indexed=False, null=True)       url = indexes.CharField(indexed=False, null=True)        PRIORITY = 1        def prepare_index_name(self, obj):           return 'Staff Directory'        def prepare_index_priority(self, obj):           # Return 1 to display Staff Directory as first search result category           return self.PRIORITY                  def prepare_index_sort(self, obj):           # sort results by last name           for index, item in enumerate(self.index_queryset().order_by('user__last_name')):               if item.id == obj.id:                   return index        def prepare_url(self, obj):           return obj.get_absolute_url()        def get_model(self):           return Person        def index_queryset(self, using=None):           '''Used when the entire index for model is updated.'''           return self.get_model().objects.filter(user__is_active=True)   "
+   },
+   
+   
+   
+   {
+     "title"    : "Tagging",
+     "category" : "",
+     "tags"     : [""],
+     "href"     : "tagging.html",
+     "body"     : "## Tagging  Collab implements its own version of [taggit](https:  github.com alex django-taggit).  ### Taggit  Taggit is a reusable django app that allows developers to add tagging capabilities to their project. It provides functionality to tag objects as well as querying them by tag name.  ### Customization  All the basic functions are there, but a `tag_category` was added. Tags can be added to multiple objects and you can retrieve them by category.  For example you can have the same tag *'travel'* for both a _Person_ and a _Document_. You can use a *'person'* and a *'document'* `tag_category` to differentiate them.   ### How to use it  To add tags you can use the `add_tags` helper:      from core.taggit.utils import add_tags     add_tags(person, tag, category_slug, req.user, 'person')"
+   },
+   
+   
+   
+   {
+     "title"    : "Widgets",
+     "category" : "",
+     "tags"     : [""],
+     "href"     : "widgets.html",
+     "body"     : "## Widgets  Collab uses [django-widgeter](https:  github.com dlapiduz django-widgeter) to render widgets on the home page and within apps.  ## How it works?  Widgeter allows you to create views and templates for blocks of code (widgets). You can add widgets to your application by adding a `widgets.py` file in the main module.  ## Widgets on the Home Page  Collab's home page has two widgeter 'blocks': `home` and `home_side`. The first one renders blocks in the main home page feed and the second one on the sidebar.  ## Sample widgets.py  Here is a sample `widgets.py` file if you would like to add a widget on the home page sidebar:      from widgeter.base import Widget      class HelloWorld(Widget):         block = 'home_side'         priority = '1'         template = 'hello_world widget.html'          def get_context(self, context, options=None):             return { 'message': u'Hello World!' }   For more information please visit: [django-widgeter](https:  github.com dlapiduz django-widgeter)."
+   },
+   
+   
+   {}
+ ]
+}

@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Widgets - Collab Docs</title>
+    <link rel="stylesheet" href="static/css/normalize.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="static/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <a href="http://consumerfinance.gov"><img class="logo" src="static/img/logo.png" alt="Consumer Financial Protection Bureau"></a>
+        <h1>collab</h1>
+      </div>
+    </header>
+
+  <div class="wrap content">
+
+    <aside>
+      <p class="intro">Collab Documentation</p>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="tagging.html">Tagging</a></li>
+          <li><a href="notifications.html">Notifications</a></li>
+          <li><a href="widgets.html">Widgets</a></li>
+          <li><a href="search.html">Search</a></li>
+          <li><a href="migrations.html">Migrations</a></li>
+          <li><a href="caching.html">Improved Caching</a></li>
+          <li><a href="javascript.html">Javascript Libraries</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <section class="main-content" role="main">
+      <h2 id='widgets'>Widgets</h2>
+
+<p>Collab uses <a href='https://github.com/dlapiduz/django-widgeter'>django-widgeter</a> to render widgets on the home page and within apps.</p>
+
+<h2 id='how_it_works'>How it works?</h2>
+
+<p>Widgeter allows you to create views and templates for blocks of code (widgets). You can add widgets to your application by adding a <code>widgets.py</code> file in the main module.</p>
+
+<h2 id='widgets_on_the_home_page'>Widgets on the Home Page</h2>
+
+<p>Collab&#8217;s home page has two widgeter &#8220;blocks&#8221;: <code>home</code> and <code>home_side</code>. The first one renders blocks in the main home page feed and the second one on the sidebar.</p>
+
+<h2 id='sample_widgetspy'>Sample widgets.py</h2>
+
+<p>Here is a sample <code>widgets.py</code> file if you would like to add a widget on the home page sidebar:</p>
+
+<pre><code>from widgeter.base import Widget
+
+class HelloWorld(Widget):
+    block = &#39;home_side&#39;
+    priority = &#39;1&#39;
+    template = &#39;hello_world/widget.html&#39;
+
+    def get_context(self, context, options=None):
+        return { &#39;message&#39;: u&#39;Hello World!&#39; }</code></pre>
+
+<p>For more information please visit: <a href='https://github.com/dlapiduz/django-widgeter'>django-widgeter</a>.</p>
+    </section>
+
+  <footer>
+    <p>This project is maintained by the<a href="https://github.com/CFPB"><br /> Consumer Financial Protection Bureau.</a></p>
+
+    <p>Hosted on Github Pages</p>
+  </footer>
+
+  </div> <!--./wrap-->
+
+  <script src="static/js/jquery-1.10.2.min.js"></script>
+  </body>
+</html>

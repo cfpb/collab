@@ -1,0 +1,12 @@
+safe:        false
+
+source:      .
+destination: ./_site
+plugins:     ./_plugins
+
+future:      true
+lsi:         false
+pygments:    true
+markdown:    maruku
+permalink:   date
+exclude:     [.bundle, bin, Gemfile, Gemfile.lock, vendor, _site]

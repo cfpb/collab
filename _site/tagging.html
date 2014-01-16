@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Tagging - Collab Docs</title>
+    <link rel="stylesheet" href="static/css/normalize.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="static/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <a href="http://consumerfinance.gov"><img class="logo" src="static/img/logo.png" alt="Consumer Financial Protection Bureau"></a>
+        <h1>collab</h1>
+      </div>
+    </header>
+
+  <div class="wrap content">
+
+    <aside>
+      <p class="intro">Collab Documentation</p>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="tagging.html">Tagging</a></li>
+          <li><a href="notifications.html">Notifications</a></li>
+          <li><a href="widgets.html">Widgets</a></li>
+          <li><a href="search.html">Search</a></li>
+          <li><a href="migrations.html">Migrations</a></li>
+          <li><a href="caching.html">Improved Caching</a></li>
+          <li><a href="javascript.html">Javascript Libraries</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <section class="main-content" role="main">
+      <h2 id='tagging'>Tagging</h2>
+
+<p>Collab implements its own version of <a href='https://github.com/alex/django-taggit'>taggit</a>.</p>
+
+<h3 id='taggit'>Taggit</h3>
+
+<p>Taggit is a reusable django app that allows developers to add tagging capabilities to their project. It provides functionality to tag objects as well as querying them by tag name.</p>
+
+<h3 id='customization'>Customization</h3>
+
+<p>All the basic functions are there, but a <code>tag_category</code> was added. Tags can be added to multiple objects and you can retrieve them by category.</p>
+
+<p>For example you can have the same tag <em>&#8220;travel&#8221;</em> for both a <em>Person</em> and a <em>Document</em>. You can use a <em>&#8220;person&#8221;</em> and a <em>&#8220;document&#8221;</em> <code>tag_category</code> to differentiate them.</p>
+
+<h3 id='how_to_use_it'>How to use it</h3>
+
+<p>To add tags you can use the <code>add_tags</code> helper:</p>
+
+<pre><code>from core.taggit.utils import add_tags
+add_tags(person, tag, category_slug, req.user, &#39;person&#39;)</code></pre>
+    </section>
+
+  <footer>
+    <p>This project is maintained by the<a href="https://github.com/CFPB"><br /> Consumer Financial Protection Bureau.</a></p>
+
+    <p>Hosted on Github Pages</p>
+  </footer>
+
+  </div> <!--./wrap-->
+
+  <script src="static/js/jquery-1.10.2.min.js"></script>
+  </body>
+</html>
