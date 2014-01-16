@@ -118,4 +118,4 @@ CACHES = {
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
-FROM_ADDRESS = 'noreply@consumerfinance.gov'
+FROM_ADDRESS = 'noreply@noreply.com'
