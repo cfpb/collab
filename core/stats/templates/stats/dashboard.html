@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block "style" %}
+    .chart rect {
+        stroke: white;
+        fill: #002D62;
+    }
+
+    .chart text.inbar {
+        fill: white;
+        font-size: .8em;
+    }
+
+    .chart text.division-title {
+        fill: black;
+        font-size: .8em;
+    }
+{% endblock %}
+
+{% block "content" %}
+    <div id="content">
+        <h1>Intranet Stats</h1>
+        <p>
+            Active users: {{ num_active_users }}
+        </p>
+        <h2>Users by Division</h2>
+        <div id="users_by_division_viz"></div>
+
+        <a href="{% url "stats:groups_list" %}"><h2>See Groups</h2></a>
+    </div>
+{% endblock %}
+
+{% block "js_scripts" %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/d3.v2.min.js"></script>
+{% endblock %}
+
+{% block "js_ready" %}
+    {% include "stats/dashboard.js" %}
+{% endblock %}

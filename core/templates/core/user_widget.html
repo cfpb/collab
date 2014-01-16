@@ -1,0 +1,30 @@
+{% load ifinstalled %}
+{% if not is_registration and user.is_authenticated %}
+    {% load cache %}
+    {% cache 86400 base_user_profile user.get_profile.cache_key %}
+        <span>
+            <h2>Hi, 
+                <a 
+                {% ifinstalled 'staff_directory' %}href="{% url "staff_directory:person" user.get_profile.stub %}" 
+                {% endifinstalled %}
+                style="font-size: 1em;">{{ user.first_name }}</a></h2>
+        </span>
+
+        <a 
+        {% ifinstalled 'staff_directory' %}href="{% url "staff_directory:person" user.get_profile.stub %}"{% endifinstalled %}
+         title="View Your Profile">
+            <img src="{{ user.get_profile.photo_file.url_125x125 }}" width=34 height=34 alt="Your Picture">
+        </a>
+
+        <script type="text/javascript">
+            $().ready(function() {
+                $.ajax('/aup/service/aup_signed/').success(function(data) {
+                    if (!JSON.parse(data).signed) {
+                        window.location.replace("/aup");
+                    };
+                });
+            })
+        </script>
+
+    {% endcache %}
+{% endif %}

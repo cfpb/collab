@@ -1,0 +1,11 @@
+{% extends "search/base.html" %}
+{% block "content" %}
+<div id="content">
+<form action="{% url "search:search_all" %}" method="GET" id="submit-form">
+    <div class="row">
+        <p>Search the Intranet</p>
+            <input type="text" valued="search_again" name="term" value="{{ term }}">
+            <input type="submit" value="Search">
+        </div>
+</div>
+{% endblock %}

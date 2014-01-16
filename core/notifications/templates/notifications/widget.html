@@ -1,0 +1,25 @@
+{% if notifications %}
+{% load upto %}
+    <div class="notification-counter">
+        <span>{{ notifications|length }}</span>
+    </div>
+    <div class="notifications" style="display:none;" id="notifications-widget">
+        <div class="notifications-box">
+            {% for notification in notifications %}
+                <div class="notification" rel="{{ forloop.counter }}" data-id="{{ notification.pk }}">
+                    <a href="{{ notification.url|default:'#' }}" title="{{ notification.title|cut:'"' }}" target="_BLANK">
+                        <p>{{ notification.title }} <span>({{ notification.timestamp|timesince|upto:',' }})</span></p>
+                    </a>
+
+                    <div class="notification-controls notification-clear">
+                        <a href="#" class="hide" title="Hide Notification">x</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if notifications|length > 1 %}
+            <a class="btn hide-all">Mark all as read</a>
+        {% endif %}
+    </div>
+{% endif %}

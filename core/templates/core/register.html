@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block "content" %}
+<div id="content">
+    <h1>Register</h1>
+    <div class="row">
+        <div class="span8">
+            <form action="{% url "core:register" %}" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="input_right">
+                        {{ field.errors }}
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <div class="align_right">
+                    <input type="submit" value="Save" class="btn">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
