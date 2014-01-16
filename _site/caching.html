@@ -39,75 +39,68 @@
     </aside>
 
     <section class="main-content" role="main">
-      <h2 id='improved_caching'>Improved Caching</h2>
+      <h2>Improved Caching</h2>
 
-<p>Collab uses the <a href='https://pypi.python.org/pypi/django-cache-tools/0.1.1'>django-cache-tools</a> package to improve Django&#8217;s basic caching.</p>
+<p>Collab uses the <a href="https://pypi.python.org/pypi/django-cache-tools/0.1.1">django-cache-tools</a> package to improve Django&#39;s basic caching.</p>
 
-<p>You can find the full documentation for django cache tools here: <a href='http://django-cache-tools.readthedocs.org/en/latest/'>http://django-cache-tools.readthedocs.org/en/latest/</a></p>
+<p>You can find the full documentation for django cache tools here: <a href="http://django-cache-tools.readthedocs.org/en/latest/">http://django-cache-tools.readthedocs.org/en/latest/</a></p>
 
 <p>The basic tools django-cache-tools provides are:</p>
 
 <ul>
-<li><a href='http://django-cache-tools.readthedocs.org/en/latest/keyable_model.html'>Keyable model</a></li>
-
-<li><a href='http://django-cache-tools.readthedocs.org/en/latest/group_cache.html'>Group Cache</a></li>
-
-<li><a href='http://django-cache-tools.readthedocs.org/en/latest/expire_page.html'>expire_page</a></li>
+<li><a href="http://django-cache-tools.readthedocs.org/en/latest/keyable_model.html">Keyable model</a></li>
+<li><a href="http://django-cache-tools.readthedocs.org/en/latest/group_cache.html">Group Cache</a></li>
+<li><a href="http://django-cache-tools.readthedocs.org/en/latest/expire_page.html">expire_page</a></li>
 </ul>
 
 <p>Here are some basic examples:</p>
 
-<h3 id='keyable_model'>Keyable Model</h3>
+<h3>Keyable Model</h3>
 
-<p>Keyable model lets you cache blocks using a caching key to leverage memcached&#8217;s LRU algorithm.</p>
+<p>Keyable model lets you cache blocks using a caching key to leverage memcached&#39;s LRU algorithm.</p>
 
 <p>First, make a model that inherits from KeyableModel:</p>
-
-<pre><code>from cache_tools.models import KeyableModel
+<div class="highlight"><pre><code class="text language-text" data-lang="text">from cache_tools.models import KeyableModel
 # ...
 class Profile(KeyableModel):
-# Your model stuff</code></pre>
-
+# Your model stuff
+</code></pre></div>
 <p>Then, pass the cache key to the cache template tag:</p>
-
-<pre><code>{% load cache %}
+<div class="highlight"><pre><code class="text language-text" data-lang="text">{% load cache %}
 {% cache 86400 cache_tools profile.cache_key %}
     &lt;p&gt;
         Lots of very time consuming code.
     &lt;/p&gt;
-{% endcache %}</code></pre>
-
-<h3 id='group_cache'>Group Cache</h3>
+{% endcache %}
+</code></pre></div>
+<h3>Group Cache</h3>
 
 <p>To cache a page in a group, you just use the cache_page_in_group decorator:</p>
-
-<pre><code>#views.py
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#views.py
 from cache_tools.tools import cache_page_in_group
 
 @cache_page_in_group(&#39;profiles&#39;)
 def show(req, slug):
-# ...</code></pre>
-
+# ...
+</code></pre></div>
 <p>Or, to cache directly in a template:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text"># cacheable.html
 
-<pre><code># cacheable.html
 {% get_group_key group_name as group_key %}
 
 {% cache 600 page_title group_key %}
 &lt;!-- Long running code --&gt;
-{% endcache %}</code></pre>
-
+{% endcache %}
+</code></pre></div>
 <p>To expire the group:</p>
-
-<pre><code>from cache_tools.tools import expire_cache_group
+<div class="highlight"><pre><code class="text language-text" data-lang="text">from cache_tools.tools import expire_cache_group
 # ...
-expire_cache_group(&#39;profiles&#39;)</code></pre>
-
-<h3 id='expire_page'>expire_page</h3>
+expire_cache_group(&#39;profiles&#39;)
+</code></pre></div>
+<h3>expire_page</h3>
 
 <p>If you have a view like:</p>
-
-<pre><code>#views.py
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#views.py
 @cache_page(60 * 10)
 def show(req, slug):
 # ...
@@ -115,13 +108,13 @@ def show(req, slug):
 #urls.py
 # ...
 url(r&#39;^profile/(?P&lt;stub&gt;.*)/$&#39;, &#39;show&#39;, name=&#39;show_profile&#39;),
-# ...</code></pre>
-
-<p>Then you can use expire_page like:</p>
-
-<pre><code>from cache_tools.tools import expire_page
 # ...
-expire_page(reverse(&#39;show_profile&#39;, args=(stub,)))</code></pre>
+</code></pre></div>
+<p>Then you can use expire_page like:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">from cache_tools.tools import expire_page
+# ...
+expire_page(reverse(&#39;show_profile&#39;, args=(stub,)))
+</code></pre></div>
     </section>
 
   <footer>

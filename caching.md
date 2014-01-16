@@ -31,12 +31,15 @@ First, make a model that inherits from KeyableModel:
 
 Then, pass the cache key to the cache template tag:
 
+    {% raw %}
     {% load cache %}
     {% cache 86400 cache_tools profile.cache_key %}
         <p>
             Lots of very time consuming code.
         </p>
     {% endcache %}
+    {% endraw %}
+
 
 
 ### Group Cache
@@ -54,11 +57,15 @@ To cache a page in a group, you just use the cache_page_in_group decorator:
 Or, to cache directly in a template:
 
     # cacheable.html
+    {% raw %}
     {% get_group_key group_name as group_key %}
 
     {% cache 600 page_title group_key %}
     <!-- Long running code -->
     {% endcache %}
+    {% endraw %}
+
+
 
 To expire the group:
 

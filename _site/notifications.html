@@ -39,13 +39,13 @@
     </aside>
 
     <section class="main-content" role="main">
-      <h2 id='notifications'>Notifications</h2>
+      <h2>Notifications</h2>
 
-<p>Collab has a built in notifications system. Basically, any app can send a notification to a user. The notification will show up in the main navigation for the user to read or hide.</p>
+<p>Collab has a built in notifications system. Basically, any app can send a notification to a user. 
+The notification will show up in the main navigation for the user to read or hide.</p>
 
 <p>To add notifications within an app you just:</p>
-
-<pre><code>from core.notifications.models import Notification
+<div class="highlight"><pre><code class="text language-text" data-lang="text">from core.notifications.models import Notification
 from core.notifications.email import EmailInfo
 
 email_info = EmailInfo(
@@ -56,29 +56,23 @@ email_info = EmailInfo(
 )
 
 Notification.set_notification(req.user, req.user, &quot;notified&quot;, user_form,
-                            user_form.owner, title, url, email_info)</code></pre>
-
-<h3 id='options'>Options</h3>
+                            user_form.owner, title, url, email_info)
+</code></pre></div>
+<h3>Options</h3>
 
 <p>set_notification the following parameters (in order):</p>
 
 <ul>
 <li><code>owner</code>: the user who is creating the notification.</li>
-
 <li><code>actor</code>: the user who is being referred on the notification.</li>
-
 <li><code>verb</code>: of what the user is being notified.</li>
-
 <li><code>obj</code>: the object to which the notification refers.</li>
-
 <li><code>target</code>: the user who is notified.</li>
-
 <li><code>title</code>: the title of the notification.</li>
-
 <li><code>url</code> (optional): the url for the page to which the notification refers.</li>
-
 <li><code>email_info</code> (optional): the email_info object referring the email to be sent.</li>
 </ul>
+
     </section>
 
   <footer>

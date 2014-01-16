@@ -39,23 +39,23 @@
     </aside>
 
     <section class="main-content" role="main">
-      <h2 id='widgets'>Widgets</h2>
+      <h2>Widgets</h2>
 
-<p>Collab uses <a href='https://github.com/dlapiduz/django-widgeter'>django-widgeter</a> to render widgets on the home page and within apps.</p>
+<p>Collab uses <a href="https://github.com/dlapiduz/django-widgeter">django-widgeter</a> to render widgets on the home page and within apps.</p>
 
-<h2 id='how_it_works'>How it works?</h2>
+<h2>How it works?</h2>
 
-<p>Widgeter allows you to create views and templates for blocks of code (widgets). You can add widgets to your application by adding a <code>widgets.py</code> file in the main module.</p>
+<p>Widgeter allows you to create views and templates for blocks of code (widgets).
+You can add widgets to your application by adding a <code>widgets.py</code> file in the main module.</p>
 
-<h2 id='widgets_on_the_home_page'>Widgets on the Home Page</h2>
+<h2>Widgets on the Home Page</h2>
 
-<p>Collab&#8217;s home page has two widgeter &#8220;blocks&#8221;: <code>home</code> and <code>home_side</code>. The first one renders blocks in the main home page feed and the second one on the sidebar.</p>
+<p>Collab&#39;s home page has two widgeter &quot;blocks&quot;: <code>home</code> and <code>home_side</code>. The first one renders blocks in the main home page feed and the second one on the sidebar.</p>
 
-<h2 id='sample_widgetspy'>Sample widgets.py</h2>
+<h2>Sample widgets.py</h2>
 
 <p>Here is a sample <code>widgets.py</code> file if you would like to add a widget on the home page sidebar:</p>
-
-<pre><code>from widgeter.base import Widget
+<div class="highlight"><pre><code class="text language-text" data-lang="text">from widgeter.base import Widget
 
 class HelloWorld(Widget):
     block = &#39;home_side&#39;
@@ -63,9 +63,10 @@ class HelloWorld(Widget):
     template = &#39;hello_world/widget.html&#39;
 
     def get_context(self, context, options=None):
-        return { &#39;message&#39;: u&#39;Hello World!&#39; }</code></pre>
+        return { &#39;message&#39;: u&#39;Hello World!&#39; }
+</code></pre></div>
+<p>For more information please visit: <a href="https://github.com/dlapiduz/django-widgeter">django-widgeter</a>.</p>
 
-<p>For more information please visit: <a href='https://github.com/dlapiduz/django-widgeter'>django-widgeter</a>.</p>
     </section>
 
   <footer>

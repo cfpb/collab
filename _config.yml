@@ -1,12 +1,16 @@
-safe:        false
+name: Collab Docs
+markdown: redcarpet
+pygments: true
 
 source:      .
 destination: ./_site
 plugins:     ./_plugins
 
-future:      true
 lsi:         false
-pygments:    true
-markdown:    maruku
+future:      true
+
 permalink:   date
 exclude:     [.bundle, bin, Gemfile, Gemfile.lock, vendor, _site]
+
+redcarpet:
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "strikethrough", "superscript"]
