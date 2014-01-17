@@ -2,6 +2,7 @@
 """
 django-thumbs by Antonio Melé
 http://django.es
+Released under Revised BSD License.
 """
 from django.db.models import ImageField
 from django.db.models.fields.files import ImageFieldFile
