@@ -1,5 +1,5 @@
-As a work of the United States Government, this package is in the
-public domain within the United States. Additionally, we waive
+As a work of the United States Government, this package, with the exception of included libraries, 
+is in the public domain within the United States. Additionally, we waive
 copyright and related rights in the work worldwide through the CC0 1.0
 Universal public domain dedication.
 
@@ -29,3 +29,9 @@ this deed makes no warranties about the work, and disclaims liability for
 all uses of the work, to the fullest extent permitted by applicable law.
 When using or citing the work, you should not imply endorsement by the
 author or the affirmer.
+
+### Included Libraries
+
+- django-taggit is released under Revised BSD License (see core/taggit/LICENSE)
+
+- django-thumbs is released under Revised BSD License (see https://code.google.com/p/django-thumbs/)
