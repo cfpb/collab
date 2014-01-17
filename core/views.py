@@ -174,7 +174,7 @@ def user_info(req):
     for notification in notifications:
         notification_dict = {}
         for field in fields:
-            notification_dict[field] = str(getattr(notification, field))
+            notification_dict[field] = unicode(getattr(notification, field)).encode("utf-8", "replace")
 
         tmp_notification.append(notification_dict)
 
