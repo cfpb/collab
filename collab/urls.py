@@ -87,6 +87,10 @@ if 'whats_new' in settings.INSTALLED_APPS:
     urlpatterns.append(url(r'^whats_new/', include(
         'whats_new.urls', namespace="whats_new")))
 
+if 'press_clips' in settings.INSTALLED_APPS:
+    urlpatterns.append(url(r'^press_clips/', include(
+        'press_clips.urls', namespace="press_clips")))
+
 if 'django.contrib.comments' in settings.INSTALLED_APPS:
     urlpatterns.append(url(r'^comments/',
         include('django.contrib.comments.urls')))

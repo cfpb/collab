@@ -69,6 +69,7 @@
 {% endblock %}
 
 {% block "js_scripts" %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/external_link.js"></script>
 <script type="text/javascript">
     $('[name="item_url"]').each(function(i, el) { tagExternalLink(el) });
 </script>
