@@ -78,7 +78,7 @@ STATICFILES_DIRS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = ''
+SECRET_KEY = 'shh-it-is-a-secret'
 
 TEMPLATE_DIRS = (
     # make sure paths to end with a forward slash,
