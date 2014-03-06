@@ -164,7 +164,8 @@ def user_widget(req):
 def user_info(req):
     user = {}
     user_info = {}
-    user['name'] = req.user.first_name
+    user['first_name'] = req.user.first_name
+    user['last_name'] = req.user.last_name
     user['stub'] = req.user.get_profile().stub
     user_info['user'] = user
 
