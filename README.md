@@ -1,5 +1,7 @@
 # Collab
 
+[![Build Status](https://travis-ci.org/cfpb/collab.svg)](https://travis-ci.org/cfpb/collab)
+
 ## What is Collab?
 
 Collab is a [Django](https://www.djangoproject.com/) project with a standard set of configurations to provide services to reusable apps.
