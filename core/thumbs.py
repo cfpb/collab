@@ -6,7 +6,7 @@ Released under Revised BSD License.
 """
 from django.db.models import ImageField
 from django.db.models.fields.files import ImageFieldFile
-import Image
+from PIL import Image
 from django.core.files.base import ContentFile
 import cStringIO
 from south.modelsinspector import add_introspection_rules
