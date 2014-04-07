@@ -1,6 +1,6 @@
 Django==1.5.4
 South
-PIL
+pillow
 pytz
 django-dynamicresponse
 wsgiref
