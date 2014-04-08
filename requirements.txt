@@ -27,3 +27,4 @@ markdown
 django-markup
 django-widgeter
 feedparser
+django-mptt
