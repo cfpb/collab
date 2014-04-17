@@ -126,7 +126,7 @@ def search(req, term='', index=''):
 
 @login_required
 @csrf_exempt
-def search_tags_json(req, term=''):
+def search_tags_json(req, term='', model=''):
     if req.method == 'POST':
         term = req.POST.get('term', '').strip()
         return HttpResponseRedirect(reverse('search:tags_json',
@@ -135,7 +135,10 @@ def search_tags_json(req, term=''):
         if term.strip() == '':
             term = req.GET.get('term', '').strip()
         q = _get_query(term, ['name', ])
-        results = Tag.objects.filter(q)[:5]
+        results = Tag.objects.filter(q)
+        if model:
+            results = results.filter(taggit_taggeditem_items__content_type__name=model)
+        results = results[:5]
         results_json = []
         for r in results:
             results_json.append({'label': r.name, 'value': r.name})
