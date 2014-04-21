@@ -32,7 +32,8 @@ def add_tags(obj, tag_str, tag_category_slug, creator, content_type_name):
     ti = TaggedItem()
     ti.tag = t
     ti.object_id = obj.id
-    ti.tag_category = TagCategory.objects.filter(slug=tag_category_slug)[0]
+    ti.tag_category = None if tag_category_slug is None else \
+                      TagCategory.objects.filter(slug=tag_category_slug)[0]
     ti.tag_creator = creator
     ti.content_type = ContentType.objects.filter(name=content_type_name)[0]
     ti.save()
