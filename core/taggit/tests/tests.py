@@ -8,17 +8,33 @@ from django.test import TestCase, TransactionTestCase
 from django.test.utils import override_settings
 
 from core.taggit.managers import TaggableManager
-from core.taggit.models import Tag, TaggedItem
+from core.taggit.models import Tag, TaggedItem, TagCategory
 from .forms import (FoodForm, DirectFoodForm, CustomPKFoodForm,
                     OfficialFoodForm)
 from .models import (Food, Pet, HousePet, DirectFood, DirectPet,
                      DirectHousePet, TaggedPet, CustomPKFood, CustomPKPet, CustomPKHousePet,
                      TaggedCustomPKPet, OfficialFood, OfficialPet, OfficialHousePet,
                      OfficialThroughModel, OfficialTag, Photo, Movie, Article)
-from core.taggit.utils import parse_tags, edit_string_for_tags
+from core.taggit.utils import parse_tags, edit_string_for_tags, add_tags
+from django.contrib.auth.models import User
+import random
+import string
 
 
 class BaseTaggingTest(object):
+
+    def random_user(self):
+        return User.objects.create_user(
+            ''.join(random.choice(string.lowercase) for _ in range(12)))
+
+    def random_tag_category(self):
+        start = ''.join(random.choice(string.lowercase) for _ in range(12))
+        end = ''.join(random.choice(string.lowercase) for _ in range(12))
+        name = '%s %s' % (start, end)
+        slug = '%s-%s' % (start, end)
+        tag_category = TagCategory(name=name, slug=slug)
+        tag_category.save()
+        return tag_category
 
     def assert_tags_equal(self, qs, tags, sort=True, attr="name"):
         got = map(lambda tag: getattr(tag, attr), qs)
@@ -26,6 +42,10 @@ class BaseTaggingTest(object):
             got.sort()
             tags.sort()
         self.assertEqual(got, tags)
+
+    def assert_tagged_items_equal(self, qs, tag_item_pairs):
+        got = map(lambda ti: (ti.content_object.name, ti.tag.name), qs)
+        self.assertEqual(got, tag_item_pairs)
 
     def assert_num_queries(self, n, f, *args, **kwargs):
         original_DEBUG = settings.DEBUG
@@ -106,6 +126,54 @@ class TagModelOfficialTestCase(TagModelTestCase):
     food_model = OfficialFood
     tag_model = OfficialTag
 
+
+class TagUtilTestCase(BaseTaggingTestCase):
+
+    def test_add_tags_util(self):
+        food_model = Food
+        apple = food_model.objects.create(name="apple")
+        self.assertEqual(list(apple.tags.all()), [])
+        self.assertEqual(list(food_model.tags.all()), [])
+
+        user1 = self.random_user()
+        category1 = self.random_tag_category()
+        add_tags(apple, 'green', category1.slug, user1, 'food')
+        self.assert_tags_equal(apple.tags.all(), ['green'])
+        self.assert_tags_equal(food_model.tags.all(), ['green'])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(content_type__name='food'),
+                                       [('apple','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_category=category1),
+                                       [('apple','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_creator=user1),
+                                       [('apple','green')])
+
+        # test null category
+        user2 = self.random_user()
+        add_tags(apple, 'yellow', None, user2, 'food')
+        self.assert_tags_equal(apple.tags.all(), ['green', 'yellow'])
+        self.assert_tags_equal(food_model.tags.all(), ['green', 'yellow'])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(content_type__name='food'),
+                                       [('apple','green'), ('apple','yellow')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_category=None),
+                                       [('apple','yellow')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_creator=user2),
+                                       [('apple','yellow')])
+
+        # test null user
+        category2 = self.random_tag_category()
+        add_tags(apple, 'red', category2.slug, None, 'food')
+        self.assert_tags_equal(apple.tags.all(), ['green', 'yellow', 'red'])
+        self.assert_tags_equal(food_model.tags.all(), ['green', 'yellow', 'red'])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(content_type__name='food'),
+                                       [('apple','green'), ('apple','yellow'), ('apple','red')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_category=category2),
+                                       [('apple','red')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_creator=None),
+                                       [('apple','red')])
+
+        # test null content_type
+        self.assertRaises(IndexError, add_tags, apple, 'red', category2.slug, user2, 'bad_content_type')
+        self.assertRaises(IndexError, add_tags, apple, 'red', category2.slug, user2, None)
 
 class TaggableManagerTestCase(BaseTaggingTestCase):
     food_model = Food
