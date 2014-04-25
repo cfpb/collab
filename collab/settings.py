@@ -55,6 +55,7 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
 "django.contrib.messages.context_processors.messages")
 
 TEMPLATE_CONTEXT_PROCESSORS += ('django.core.context_processors.request',)
+TEMPLATE_CONTEXT_PROCESSORS += ('collab.context_processors.collab_context',)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -195,6 +196,9 @@ HAYSTACK_CONNECTIONS = {
 VALID_DOMAINS = ['']
 
 PROJECT_URL = 'http://collab.demo'
+
+COLLAB_CONTEXT = {
+}
 
 from collab.local_settings import *
 from collab.local_apps import *

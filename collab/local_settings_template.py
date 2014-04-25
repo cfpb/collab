@@ -121,3 +121,7 @@ if DEBUG:
 FROM_ADDRESS = 'noreply@noreply.com'
 
 PROJECT_URL = "http://localhost:8000/"
+
+COLLAB_CONTEXT = {
+}
+
