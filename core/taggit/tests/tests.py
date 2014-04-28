@@ -175,6 +175,129 @@ class TagUtilTestCase(BaseTaggingTestCase):
         self.assertRaises(IndexError, add_tags, apple, 'red', category2.slug, user2, 'bad_content_type')
         self.assertRaises(IndexError, add_tags, apple, 'red', category2.slug, user2, None)
 
+    def test_add_tags_duplicate_tag(self):
+        """
+        add_tags function should only create a Tag if it doesn't already exist
+        """
+        food_model = Food
+        apple = food_model.objects.create(name="apple")
+        self.assertEqual(list(apple.tags.all()), [])
+        self.assertEqual(list(food_model.tags.all()), [])
+
+        user1 = self.random_user()
+        category1 = self.random_tag_category()
+        add_tags(apple, 'green', category1.slug, user1, 'food')
+        self.assert_tags_equal(apple.tags.all(), ['green'])
+        self.assert_tags_equal(food_model.tags.all(), ['green'])
+
+        #  test exact duplicate
+        add_tags(apple, 'green', category1.slug, user1, 'food')
+        self.assert_tags_equal(apple.tags.all(), ['green'])
+        self.assert_tags_equal(food_model.tags.all(), ['green'])
+
+        #  test duplicate with different category/user/content_type
+        user2 = self.random_user()
+        category2 = self.random_tag_category()
+        food_model2 = Pet
+        food_model2.objects.create(name="apple")
+        add_tags(apple, 'green', category2.slug, user2, 'pet')
+        self.assert_tags_equal(apple.tags.all(), ['green'])
+        self.assert_tags_equal(food_model.tags.all(), ['green'])
+
+    def test_add_tags_new_taggeditem(self):
+        """
+        add_tags function should only create a Tag if it doesn't already exist
+        """
+        food_model = Food
+        apple = food_model.objects.create(name="apple")
+        self.assertEqual(list(apple.tags.all()), [])
+        self.assertEqual(list(food_model.tags.all()), [])
+
+        user1 = self.random_user()
+        category1 = self.random_tag_category()
+        add_tags(apple, 'green', category1.slug, user1, 'food')
+        self.assert_tags_equal(apple.tags.all(), ['green'])
+        self.assert_tags_equal(food_model.tags.all(), ['green'])
+
+        #  test existing tag with different taggeditem
+        orange = food_model.objects.create(name="orange")
+        add_tags(orange, 'green', category1.slug, user1, 'food')
+        self.assert_tags_equal(apple.tags.all(), ['green'])
+        self.assert_tags_equal(orange.tags.all(), ['green'])
+        self.assert_tags_equal(food_model.tags.all(), ['green'])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(content_type__name='food'),
+                                       [('apple','green'),('orange','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_category=category1),
+                                       [('apple','green'),('orange','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_creator=user1),
+                                       [('apple','green'),('orange','green')])
+
+    def test_add_tags_duplicate_taggeditem(self):
+        """
+        add_tags function should only create a TaggedItem if it doesn't
+        already exist
+        """
+        food_model = Food
+        apple = food_model.objects.create(name="apple")
+        self.assertEqual(list(apple.tags.all()), [])
+        self.assertEqual(list(food_model.tags.all()), [])
+
+        user1 = self.random_user()
+        category1 = self.random_tag_category()
+        add_tags(apple, 'green', category1.slug, user1, 'food')
+        self.assert_tags_equal(apple.tags.all(), ['green'])
+        self.assert_tags_equal(food_model.tags.all(), ['green'])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(content_type__name='food'),
+                                       [('apple','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_category=category1),
+                                       [('apple','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_creator=user1),
+                                       [('apple','green')])
+
+        #  test exact duplicate
+        add_tags(apple, 'green', category1.slug, user1, 'food')
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(content_type__name='food'),
+                                       [('apple','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_category=category1),
+                                       [('apple','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_creator=user1),
+                                       [('apple','green')])
+
+        #  test duplicate with different category
+        category2 = self.random_tag_category()
+        add_tags(apple, 'green', category2.slug, user1, 'food')
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(content_type__name='food'),
+                                       [('apple','green'), ('apple','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_category=category2),
+                                       [('apple','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_creator=user1),
+                                       [('apple','green'),('apple','green')])
+
+        #  test duplicate with different content_type
+        food_model2 = Pet
+        food_model2.objects.create(name="apple", id=apple.id)
+        add_tags(apple, 'green', category2.slug, user1, 'pet')
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(content_type__name='pet'),
+                                       [('apple','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_category=category2),
+                                       [('apple','green'),('apple','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_creator=user1),
+                                       [('apple','green'),('apple','green'),('apple','green')])
+
+        #  test duplicate with different creator
+        user2 = self.random_user()
+        add_tags(apple, 'green', category2.slug, user2, 'food')
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(content_type__name='pet'),
+                                       [('apple','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_category=category2),
+                                       [('apple','green'), ('apple','green')])
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_creator=user2),
+                                       [])
+        #  ensure the old user didn't change either
+        self.assert_tagged_items_equal(TaggedItem.objects.filter(tag_creator=user1),
+                                       [('apple','green'),('apple','green'),('apple','green')])
+
+
 class TaggableManagerTestCase(BaseTaggingTestCase):
     food_model = Food
     pet_model = Pet
