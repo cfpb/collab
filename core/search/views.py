@@ -137,7 +137,8 @@ def search_tags_json(req, term='', model=''):
         q = _get_query(term, ['name', ])
         results = Tag.objects.filter(q)
         if model:
-            results = results.filter(taggit_taggeditem_items__content_type__name=model)
+            # join with taggeditem may results in duplicates, requires distinct()
+            results = results.filter(taggit_taggeditem_items__content_type__name=model).distinct()
         results = results[:5]
         results_json = []
         for r in results:

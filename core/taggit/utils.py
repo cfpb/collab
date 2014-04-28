@@ -29,14 +29,22 @@ def add_tags(obj, tag_str, tag_category_slug, creator, content_type_name):
         t.name = tag_name[:99]
         t.slug = slugify(tag_name)
         t.save()
-    ti = TaggedItem()
-    ti.tag = t
-    ti.object_id = obj.id
-    ti.tag_category = None if tag_category_slug is None else \
-                      TagCategory.objects.filter(slug=tag_category_slug)[0]
-    ti.tag_creator = creator
-    ti.content_type = ContentType.objects.filter(name=content_type_name)[0]
-    ti.save()
+    # don't recreate the taggeditem if it already exists
+    category = None if tag_category_slug is None else \
+               TagCategory.objects.filter(slug=tag_category_slug)[0]
+    content = ContentType.objects.filter(name=content_type_name)[0]
+    try:
+        ti = TaggedItem.objects.get(tag=t, object_id=obj.id,
+                                    tag_category=category,
+                                    content_type=content)
+    except ObjectDoesNotExist:
+        ti = TaggedItem()
+        ti.tag = t
+        ti.object_id = obj.id
+        ti.tag_category = category
+        ti.tag_creator = creator
+        ti.content_type = content
+        ti.save()
     return ti
 
 
