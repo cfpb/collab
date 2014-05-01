@@ -16,7 +16,7 @@ class Command(BaseCommand):
             'Sarah', 'Ian', 'Upton', 'Uriah', 'Hayden', 'Zia', 'Lila', 'Benjamin', 'Addison', 'Vivian', 'Kirby', 'Oscar', 'Demetrius', 'Hashim', 'Michelle', 'Odessa', 'Phillip', 'Michael', 'Dante', 'Omar', 'Dominic', 'Wing', 'Joshua', 'Charlotte', 'Thomas', 'Aquila', 'Rana', 'Jolene', 'Felix', 'Cailin', 'Tatiana', 'Oprah', 'Belle', 'Sydnee', 'Kuame', 'Fleur', 'Matthew', 'Sylvia', 'Mary', 'Deborah', 'Ross', 'Hyacinth', 'Jacqueline', 'Jessica', 'Callie', 'Ariana', 'Leo', 'Desiree', 'Lunea', 'Chava', 'Jorden', 'Rudyard', 'Cally', 'Knox', 'Arthur', 'Dana', 'Rebekah', 'Yen', 'Hadassah', 'Duncan', 'Ginger', 'Valentine', 'Ivana', 'Iona', 'Jemima', 'Dorothy', 'Joan', 'Timothy', 'Amity', 'Uriel', 'Skyler', 'Phelan', 'Alma', 'Hadley',
             'Quemby', 'Sonya', 'Axel', 'Slade', 'Riley', 'Rajah', 'Giselle', 'Selma', 'Nadine', 'Pascale', 'Carol', 'Steel', 'Lane', 'Emi', 'Trevor', 'Wyatt', 'Claire', 'Harlan', 'Liberty', 'Alexandra', 'Avram', 'Barbara', 'Rashad', 'Holmes', 'Kenneth', 'Preston', 'Patience', 'Adele', 'Alfonso', 'Harrison', 'Julian', 'Jena', 'Peter', 'Kessie', 'Katell', 'Denton', 'Piper', 'Jerry', 'Teegan', 'Chandler', 'Walter', 'Cheryl', 'Desirae', 'Tasha', 'Hunter', 'Logan', 'Tatyana', 'Gail', 'Galvin', 'Dara', 'Athena', 'Kay', 'Dustin', 'Faith', 'Mariam', 'Leroy', 'Edan', 'Alexis', 'Nissim', 'Octavia', 'Kareem', 'Heidi', 'Aspen', 'Gregory', 'Garrison', 'Jolie', 'Gloria', 'Alec', 'Asher', 'Julie', 'Ayanna', 'Gavin', 'Germane', 'Bertha', 'Quinn', 'Tarik']
 
-        office_location = OfficeLocation.objects.get(pk='DC1700')
+        office_location = OfficeLocation.objects.get(pk='DC123')
 
         for x in xrange(int(args[0])):
             while True:
