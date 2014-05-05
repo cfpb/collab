@@ -54,9 +54,6 @@ if 'resource_library' in settings.INSTALLED_APPS:
     urlpatterns.append(url(r'^supervision/e2/', RedirectView.as_view(url=reverse_lazy(
         "resource_library:by_category", args=('examiners-encyclopedia',)))))
 
-if 'quiz' in settings.INSTALLED_APPS:
-    urlpatterns.append(url(r'^quiz/', include('quiz.urls', namespace="quiz")))
-
 if 'staff_directory' in settings.INSTALLED_APPS:
     urlpatterns.append(
         url(r'^staff/', include(
