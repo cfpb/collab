@@ -52,7 +52,8 @@
             "state": "DC",
             "street": "123 Pennsylvania ave",
             "zip": "20552",
-            "city": "Washington"
+            "city": "Washington",
+            "name": "Downtown Washington DC"
         }
     },
     {
