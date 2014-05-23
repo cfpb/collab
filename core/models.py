@@ -139,6 +139,7 @@ class OfficeLocation(models.Model):
         office number, floor, etc., are intentionally omitted
     """
     id = models.CharField(max_length=12, primary_key=True)
+    name = models.CharField(max_length=56)
     street = models.CharField(max_length=56)
     suite = models.CharField(max_length=56, blank=True, null=True)
     city = models.CharField(max_length=56)
