@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.test.utils import override_settings
-from core.models import User, Person, App
+from django.contrib.auth import get_user_model
+from core.models import Person, App
 import core.views as views
 from core import helpers
 import datetime
@@ -30,11 +31,11 @@ class PersonTest(TestCase):
         self.assertEquals(person.photo_file, 'avatars/not_default.jpg')
 
     def test_full_name(self):
-        person = Person(user=User(first_name="Baba", last_name="O'Reilly"))
+        person = Person(user=get_user_model()(first_name="Baba", last_name="O'Reilly"))
         self.assertEquals(person.full_name, "Baba O'Reilly")
 
     def test_days_since_hire(self):
-        person = Person(user=User(first_name="Baba", last_name="O'Reilly"))
+        person = Person(user=get_user_model()(first_name="Baba", last_name="O'Reilly"))
         person.start_date = timezone.now() - datetime.timedelta(days=10)
         self.assertEquals(person.days_since_hire, 10)
 
@@ -83,7 +84,7 @@ class HelperUserNoProfileTest(TestCase):
     """
 
     def test_helper_no_profile(self):
-        u = User()
+        u = get_user_model()()
         u.first_name = "John"
         u.last_name = "Smith"
         u.save()

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from django.contrib.auth.models import User, Permission
+from django.contrib.auth.models import Permission
+from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from core.models import App, Person, OrgGroup, OfficeLocation
 from core.models import Alert
@@ -10,7 +11,7 @@ admin.site.register(OfficeLocation)
 admin.site.register(App)
 admin.site.register(OrgGroup)
 admin.site.register(Permission)
-admin.site.unregister(User)
+admin.site.unregister(get_user_model())
 
 
 class PersonAdmin(admin.ModelAdmin):
@@ -37,5 +38,5 @@ class UserProfileInline(admin.StackedInline):
 class UserProfileAdmin(UserAdmin):
     inlines = [UserProfileInline]
 
-admin.site.register(User, UserProfileAdmin)
+admin.site.register(get_user_model(), UserProfileAdmin)
 admin.site.register(Alert)

@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model 
 from core.models import OrgGroup, OfficeLocation
 from collab.settings import VALID_DOMAINS
 
@@ -25,7 +25,7 @@ def valid_domain(email):
 
 
 def email_exists(email):
-    if len(User.objects.filter(email=email)) > 0:
+    if len(get_user_model().objects.filter(email=email)) > 0:
         return True
     else:
         return False

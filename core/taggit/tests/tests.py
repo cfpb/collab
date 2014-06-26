@@ -16,7 +16,7 @@ from .models import (Food, Pet, HousePet, DirectFood, DirectPet,
                      TaggedCustomPKPet, OfficialFood, OfficialPet, OfficialHousePet,
                      OfficialThroughModel, OfficialTag, Photo, Movie, Article)
 from core.taggit.utils import parse_tags, edit_string_for_tags, add_tags
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 import random
 import string
 
@@ -24,7 +24,7 @@ import string
 class BaseTaggingTest(object):
 
     def random_user(self):
-        return User.objects.create_user(
+        return get_user_model().objects.create_user(
             ''.join(random.choice(string.lowercase) for _ in range(12)))
 
     def random_tag_category(self):

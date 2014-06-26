@@ -1,8 +1,9 @@
 from django.conf import settings
 from django.db.models import Q
 from django.core.urlresolvers import reverse
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.core.context_processors import csrf
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
@@ -28,7 +29,7 @@ def _create_params(req):
 @user_passes_test(lambda u: u.is_superuser)
 def dashboard(req):
     p = _create_params(req)
-    p['num_active_users'] = User.objects.filter(is_active=True).count()
+    p['num_active_users'] = get_user_model().objects.filter(is_active=True).count()
     return render_to_response(TEMPLATE_PATH + 'dashboard.html', p,
                               context_instance=RequestContext(req))
 
@@ -67,7 +68,7 @@ def users_by_division_json(req):
     divisions = OrgGroup.objects.filter(
         parent=None).exclude(title__icontains="Region").order_by('title')
     for d in divisions:
-        result[d.title] = User.objects.filter(is_active=True).filter(
+        result[d.title] = get_user_model().objects.filter(is_active=True).filter(
             Q(person__org_group=d) |
             Q(person__org_group__parent=d)).order_by(
             'last_name', 'first_name').count()
