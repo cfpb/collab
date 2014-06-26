@@ -2,7 +2,7 @@ import datetime
 import factory
 
 from django.conf import settings
-from django.contrib.auth import models
+from django.contrib.auth import models, get_user_model
 from django.contrib.contenttypes import models as ctmodels
 from django.db.models import get_model, Model
 from django.utils import timezone
@@ -30,7 +30,7 @@ class GroupF(factory.Factory):
 
 
 class UserF(factory.Factory):
-    FACTORY_FOR = models.User
+    FACTORY_FOR = get_user_model()
 
     @classmethod
     def _setup_next_sequence(cls):

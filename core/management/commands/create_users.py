@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from core.models import Person, OfficeLocation, OrgGroup
 import random
 
@@ -25,7 +25,7 @@ class Command(BaseCommand):
                 last_name = last_names[int(random.random() * len(last_names))]
                 username = last_name + first_name[0]
                 email = username + '@exmaple.com'
-                if not User.objects.filter(username=email).exists():
+                if not get_user_model().objects.filter(username=email).exists():
                     break
 
             user_attr = {
@@ -40,7 +40,7 @@ class Command(BaseCommand):
                 'username': email
             }
 
-            user = User(**user_attr)
+            user = get_user_model(**user_attr)
             user.save()
 
             person_attr = {

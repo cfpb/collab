@@ -2,9 +2,9 @@
     Django Models related to central aspects of the Intranet, such as
     employee profiles and front page updates.
 """
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
-from collab.settings import INSTALLED_APPS
+from collab.settings import INSTALLED_APPS, AUTH_USER_MODEL
 from django.db import models
 from core.thumbs import ImageWithThumbsField
 from core.taggit.managers import TaggableManager
@@ -45,7 +45,7 @@ class Person(KeyableModel):
     """
         Represents a user's profile
     """
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(AUTH_USER_MODEL)
     stub = models.CharField(max_length=128, null=True, blank=True)
     title = models.CharField(max_length=128, null=True, blank=True)
     org_group = models.ForeignKey('OrgGroup', null=True, blank=True)
@@ -70,7 +70,7 @@ class Person(KeyableModel):
 
     @classmethod
     def active_user_count(cls):
-        return User.objects.filter(is_active=True).count()
+        return get_user_model().objects.filter(is_active=True).count()
 
     @property
     def full_name(self):
