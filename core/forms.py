@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
 from core.models import CollabUser
 from core.models import OrgGroup, OfficeLocation
-from collab.settings import VALID_DOMAINS
+from django.conf import settings
 
 required_validator = {
     'first_name': 'Your first name is required.',
@@ -18,7 +18,7 @@ required_validator = {
 
 def valid_domain(email):
     valid_domain = False
-    for domain in VALID_DOMAINS:
+    for domain in settings.VALID_DOMAINS:
         if email.endswith(domain):
             valid_domain = True
 
