@@ -58,7 +58,7 @@
     },
     {
         "pk": 1,
-        "model": "auth.user",
+        "model": "core.collabuser",
         "fields": {
             "username": "test1@example.com",
             "first_name": "John",
@@ -76,7 +76,7 @@
     },
     {
         "pk": 2,
-        "model": "auth.user",
+        "model": "core.collabuser",
         "fields": {
             "username": "test2@example.com",
             "first_name": "Sara",
@@ -94,7 +94,7 @@
     },
     {
         "pk": 3,
-        "model": "auth.user",
+        "model": "core.collabuser",
         "fields": {
             "username": "test3@example.com",
             "first_name": "Beth",
@@ -112,7 +112,7 @@
     },
     {
         "pk": 4,
-        "model": "auth.user",
+        "model": "core.collabuser",
         "fields": {
             "username": "admin@example.com",
             "first_name": "Admin",
@@ -148,7 +148,7 @@
                 "test1@example.com"
             ],
             "home_phone": "",
-            "org_group": null,
+            "org_group": 69,
             "things_im_good_at": "",
             "email_notifications": false,
             "updated_at": "2012-03-01T11:34:54Z"
