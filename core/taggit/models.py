@@ -5,7 +5,7 @@ from django.db import models, IntegrityError, transaction
 from django.template.defaultfilters import slugify as default_slugify
 from django.utils.translation import ugettext_lazy as _, ugettext
 from django.contrib.auth import get_user_model
-from collab.settings import AUTH_USER_MODEL
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 
@@ -149,7 +149,7 @@ class TagCategory(models.Model):
 class GenericTaggedItemBase(ItemBase):
     object_id = models.IntegerField(verbose_name=_('Object id'),
                                     db_index=True)
-    tag_creator = models.ForeignKey(AUTH_USER_MODEL, null=True,
+    tag_creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True,
                                     related_name='%(app_label)s_%(class)s_related')
     create_timestamp = models.DateTimeField(auto_now=True)
     tag_category = models.ForeignKey(TagCategory, null=True)
