@@ -5,7 +5,7 @@
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.conf import settings
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager, SiteProfileNotAvailable
 from django.core import validators
 from django.db import models
 from core.thumbs import ImageWithThumbsField

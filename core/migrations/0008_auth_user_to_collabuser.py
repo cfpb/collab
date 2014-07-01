@@ -2,13 +2,22 @@
 import datetime
 from south.db import db
 from south.v2 import DataMigration
-from django.db import models
+from django.db import models, DatabaseError
 
 class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
-        for old_u in orm['auth.User'].objects.all():
+
+        # on a new install with a custom user model, the auth.User table
+        # will not exist, throwing a DatabaseError
+        try:
+            old_u_list = orm['auth.User'].objects.all()
+            old_u_list.count()
+        except DatabaseError:
+            old_u_list = []
+
+        for old_u in old_u_list:
             new_u = orm.CollabUser.objects.create(
                         id=old_u.id,
                         password=old_u.password,
