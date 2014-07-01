@@ -2,7 +2,10 @@
 import datetime
 from south.db import db
 from south.v2 import SchemaMigration
-from django.db import models
+from django.db import models, connection, DatabaseError
+
+def db_table_exists(table_name):
+    return table_name in connection.introspection.table_names()
 
 
 class Migration(SchemaMigration):
@@ -13,9 +16,16 @@ class Migration(SchemaMigration):
 
         # Update tables not normally handled by south
         db.alter_column(u'django_admin_log', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.CollabUser']))
-        db.alter_column(u'django_comment_flags', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.CollabUser']))
         db.alter_column(u'django_comments', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(null=True, to=orm['core.CollabUser']))
-        db.alter_column(u'reversion_revision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(null=True, to=orm['core.CollabUser']))
+        try:
+            db.alter_column(u'django_comment_flags', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.CollabUser']))
+        except DatabaseError:
+            pass
+        try:
+            if db_table_exists(u'reversion_revision'):
+                db.alter_column(u'reversion_revision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(null=True, to=orm['core.CollabUser']))
+        except DatabaseError:
+            pass
 
     def backwards(self, orm):
 
@@ -23,9 +33,16 @@ class Migration(SchemaMigration):
 
         # Update tables not normally handled by south
         db.alter_column(u'django_admin_log', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User']))
-        db.alter_column(u'django_comment_flags', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User']))
         db.alter_column(u'django_comments', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(null=True, to=orm['auth.User']))
-        db.alter_column(u'reversion_revision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(null=True, to=orm['auth.User']))
+        try:
+            db.alter_column(u'django_comment_flags', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User']))
+        except DatabaseError:
+            pass
+        try:
+            if db_table_exists(u'reversion_revision'):
+                db.alter_column(u'reversion_revision', 'user_id', self.gf('django.db.models.fields.related.ForeignKey')(null=True, to=orm['auth.User']))
+        except DatabaseError:
+            pass
 
     models = {
         u'auth.group': {
