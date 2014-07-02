@@ -28,6 +28,9 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
+# Default user model is 'auth.User', override here
+AUTH_USER_MODEL = 'auth.User'
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
