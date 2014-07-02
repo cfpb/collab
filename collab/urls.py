@@ -93,7 +93,7 @@ if 'mystery' in settings.INSTALLED_APPS:
         'mystery.urls', namespace="mystery")))
 
 if 'wizwiz' in settings.INSTALLED_APPS:
-    urlpatterns.append(url(r'^wiz/', include(
+    urlpatterns.append(url(r'^dtree/', include(
         'wizwiz.urls', namespace="wiz")))
 
 if 'django.contrib.comments' in settings.INSTALLED_APPS:
