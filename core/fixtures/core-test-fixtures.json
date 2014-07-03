@@ -148,7 +148,7 @@
                 "test1@example.com"
             ],
             "home_phone": "",
-            "org_group": null,
+            "org_group": 69,
             "things_im_good_at": "",
             "email_notifications": false,
             "updated_at": "2012-03-01T11:34:54Z"
