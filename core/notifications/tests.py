@@ -1,6 +1,6 @@
 from django.test import TestCase
 from core.notifications.models import Notification
-from core.models import User
+from django.contrib.auth import get_user_model 
 
 
 class NotificationsTest(TestCase):
@@ -10,15 +10,15 @@ class NotificationsTest(TestCase):
     if there are no new notifications"""
 
     def test_get_and_mark_unread_no_unread(self):
-        user = User.objects.get(pk=1)
+        user = get_user_model().objects.get(pk=1)
         with self.assertNumQueries(1):
             Notification.get_and_mark_unread(user)
 
     """Test that the notification gets marked as read after being viewed"""
 
     def test_get_and_mark_unread(self):
-        user = User.objects.get(pk=2)
-        target = User.objects.get(pk=1)
+        user =  get_user_model().objects.get(pk=2)
+        target = get_user_model().objects.get(pk=1)
 
         notification = Notification(owner=user,
                                     actor=user,
@@ -52,7 +52,7 @@ class ViewsTest(TestCase):
     def test_mark_as_read(self):
         self.client.login(username='test1@example.com', password='1')
 
-        user = User.objects.get(pk=1)
+        user = get_user_model().objects.get(pk=1)
         notification = Notification.set_notification(
             user, user, "tagged", user,
             user, "You tagged someone", "http://url.com/")
@@ -69,8 +69,8 @@ class ViewsTest(TestCase):
 
     def test_mark_all_as_read(self):
         self.client.login(username='test1@example.com', password='1')
-        login_user = User.objects.get(pk=1)
-        other_user = User.objects.get(pk=3)
+        login_user = get_user_model().objects.get(pk=1)
+        other_user = get_user_model().objects.get(pk=3)
         notification1 = Notification.set_notification(
             owner=login_user, actor=login_user, verb="tagged", obj="message",
             target=login_user, title="You tagged someone",

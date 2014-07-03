@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from core.taggit.models import Tag, TaggedItem, TagCategory
 
 
@@ -18,7 +18,7 @@ class TagAdmin(admin.ModelAdmin):
 
 class TaggedItemForm(forms.ModelForm):
     tag_creator = forms.ModelChoiceField(
-        queryset=User.objects.order_by('username'))
+        queryset=get_user_model().objects.order_by('username'))
 
     class Meta:
         model = TaggedItem
