@@ -4,7 +4,8 @@ from django.contrib.contenttypes.generic import GenericForeignKey
 from django.db import models, IntegrityError, transaction
 from django.template.defaultfilters import slugify as default_slugify
 from django.utils.translation import ugettext_lazy as _, ugettext
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 
@@ -22,7 +23,7 @@ class TagBase(models.Model):
 
     def taggers(self, category_slug, object_id, content_type):
         users = []
-        for user in User.objects.filter(
+        for user in get_user_model().objects.filter(
                 taggit_taggeditem_related__tag_category__slug=category_slug,
                 taggit_taggeditem_related__tag__slug=self.slug,
                 taggit_taggeditem_related__object_id=object_id,
@@ -148,7 +149,7 @@ class TagCategory(models.Model):
 class GenericTaggedItemBase(ItemBase):
     object_id = models.IntegerField(verbose_name=_('Object id'),
                                     db_index=True)
-    tag_creator = models.ForeignKey(User, null=True,
+    tag_creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True,
                                     related_name='%(app_label)s_%(class)s_related')
     create_timestamp = models.DateTimeField(auto_now=True)
     tag_category = models.ForeignKey(TagCategory, null=True)

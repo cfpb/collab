@@ -3,7 +3,6 @@ from django.test import TestCase
 from django_webtest import WebTest
 from exam.decorators import fixture
 from exam.cases import Exam
-from django.contrib.auth.models import User
 from collab.django_factories import UserF
 from core.models import OrgGroup, Person
 

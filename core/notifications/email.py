@@ -2,9 +2,7 @@ from django.template import Context
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 
-from collab.local_settings import FROM_ADDRESS
-
-from collab.settings import PROJECT_URL
+from django.conf import settings
 
 
 class EmailInfo(object):
@@ -35,9 +33,9 @@ def email_notification(notification, email_info):
 
     d = Context({'n': notification,
                  'c': email_info.context,
-                 'project_url': PROJECT_URL})
+                 'project_url': settings.PROJECT_URL})
 
-    subject, from_email, to = email_info.subject, FROM_ADDRESS, email_info.to_address
+    subject, from_email, to = email_info.subject, settings.FROM_ADDRESS, email_info.to_address
     text_content = plaintext.render(d)
     html_content = htmly.render(d)
 

@@ -29,7 +29,7 @@ USE_L10N = True
 USE_TZ = True
 
 # Default user model is 'auth.User', override here
-AUTH_USER_MODEL = 'auth.User'
+AUTH_USER_MODEL = 'core.CollabUser'
 
 # List of finder classes that know how to find static files in
 # various locations.

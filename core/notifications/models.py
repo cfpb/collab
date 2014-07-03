@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
 from core.notifications.email import email_notification
+from django.conf import settings
 import uuid
 
 
@@ -11,12 +11,13 @@ class Notification(models.Model):
         were tagged by another user.
     """
     timestamp = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey(User, related_name='+')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='+')
     uuid = models.CharField(max_length=255)
-    actor = models.ForeignKey(User, related_name='+')
+    actor = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='+')
     verb = models.TextField(max_length=255)
     obj = models.TextField("message representing notification.")
-    target = models.ForeignKey(User, related_name='user_notifications')
+    target = models.ForeignKey(settings.AUTH_USER_MODEL,
+                               related_name='user_notifications')
     title = models.TextField(max_length=255)
     viewed = models.BooleanField(default=False)
     url = models.TextField(max_length=255, blank=True, null=True)

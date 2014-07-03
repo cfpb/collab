@@ -2,17 +2,21 @@
     Django Models related to central aspects of the Intranet, such as
     employee profiles and front page updates.
 """
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
-from collab.settings import INSTALLED_APPS
+from django.conf import settings
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager, SiteProfileNotAvailable
+from django.core import validators
 from django.db import models
 from core.thumbs import ImageWithThumbsField
 from core.taggit.managers import TaggableManager
 from cache_tools.models import KeyableModel
 from cache_tools.tools import expire_page
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ImproperlyConfigured
 from core.helpers import format_phone_number
 import datetime
+import re
 from django.utils import timezone
 from south.modelsinspector import add_ignored_fields
 
@@ -39,13 +43,89 @@ class App(models.Model):
             ("can_use", "Can use this app"),
         )
 
+class CollabUser(AbstractBaseUser, PermissionsMixin):
+    ''' Override base User class to increases username limit to 75 '''
+    username = models.CharField(max_length=75, unique=True,
+        help_text='Required. 75 characters or fewer. Letters, numbers and ' +
+                  '@/./+/-/_ characters',
+        validators=[
+            validators.RegexValidator(re.compile('^[\w.@+-]+$'),
+                                      'Enter a valid username.', 'invalid')
+        ])
+    first_name = models.CharField(max_length=75, blank=True)
+    last_name = models.CharField(max_length=75, blank=True)
+    email = models.EmailField(max_length=254, blank=True)
+    is_staff = models.BooleanField(default=False,
+        help_text='Designates whether the user can log into this admin site.')
+    is_active = models.BooleanField(default=True,
+        help_text='Designates whether this user should be treated as ' +
+                  'active. Unselect this instead of deleting accounts.')
+
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(default=timezone.now)
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
+
+    def get_absolute_url(self):
+        return "/users/%s/" % urlquote(self.username)
+
+    def get_full_name(self):
+        """
+        Returns the first_name plus the last_name, with a space in between.
+        """
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip()
+
+    def get_short_name(self):
+        "Returns the short name for the user."
+        return self.first_name
+
+    def email_user(self, subject, message, from_email=None):
+        """
+        Sends an email to this User.
+        """
+        send_mail(subject, message, from_email, [self.email])
+
+    def get_profile(self):
+        """
+        Returns site-specific profile for this user. Raises
+        SiteProfileNotAvailable if this site does not allow profiles.
+        """
+        if not hasattr(self, '_profile_cache'):
+            if not getattr(settings, 'AUTH_PROFILE_MODULE', False):
+                raise SiteProfileNotAvailable(
+                    'You need to set AUTH_PROFILE_MODULE in your project '
+                    'settings')
+            try:
+                app_label, model_name = settings.AUTH_PROFILE_MODULE.split('.')
+            except ValueError:
+                raise SiteProfileNotAvailable(
+                    'app_label and model_name should be separated by a dot in '
+                    'the AUTH_PROFILE_MODULE setting')
+            try:
+                model = models.get_model(app_label, model_name)
+                if model is None:
+                    raise SiteProfileNotAvailable(
+                        'Unable to load the profile model, check '
+                        'AUTH_PROFILE_MODULE in your project settings')
+                self._profile_cache = model._default_manager.using(
+                                   self._state.db).get(user__id__exact=self.id)
+                self._profile_cache.user = self
+            except (ImportError, ImproperlyConfigured):
+                raise SiteProfileNotAvailable
+        return self._profile_cache
+
 
 class Person(KeyableModel):
 
     """
         Represents a user's profile
     """
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL)
     stub = models.CharField(max_length=128, null=True, blank=True)
     title = models.CharField(max_length=128, null=True, blank=True)
     org_group = models.ForeignKey('OrgGroup', null=True, blank=True)
@@ -70,7 +150,7 @@ class Person(KeyableModel):
 
     @classmethod
     def active_user_count(cls):
-        return User.objects.filter(is_active=True).count()
+        return get_user_model().objects.filter(is_active=True).count()
 
     @property
     def full_name(self):
@@ -85,7 +165,7 @@ class Person(KeyableModel):
             pass
 
     def expire_cache(self):
-        if 'staff_directory' in INSTALLED_APPS:
+        if 'staff_directory' in settings.INSTALLED_APPS:
             return expire_page(reverse('staff_directory:person', args=(self.stub,)))
         else:
             pass
