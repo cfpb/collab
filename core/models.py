@@ -47,9 +47,9 @@ class CollabUser(AbstractBaseUser, PermissionsMixin):
     ''' Override base User class to increases username limit to 75 '''
     username = models.CharField(max_length=75, unique=True,
         help_text='Required. 75 characters or fewer. Letters, numbers and ' +
-                  '@/./+/-/_ characters',
+                  "@/./'/+/-/_ characters",
         validators=[
-            validators.RegexValidator(re.compile('^[\w.@+-]+$'),
+            validators.RegexValidator(re.compile("^[\w.'@+-]+$"),
                                       'Enter a valid username.', 'invalid')
         ])
     first_name = models.CharField(max_length=75, blank=True)
