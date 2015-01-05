@@ -121,12 +121,12 @@ class CollabUserCreationForm(UserCreationForm):
     """
     Modify the Django UserCreationForm with upated char limits for username
     """
-    username = forms.RegexField(max_length=75, regex=r'^[\w.@+-]+$',
+    username = forms.RegexField(max_length=75, regex=r"^[\w.'@+-]+$",
         help_text="Required. 75 characters or fewer. Letters, digits and " +
-                  "@/./+/-/_ only.",
+                  "@/./'/+/-/_ only.",
         error_messages={
             'invalid': "This value may contain only letters, numbers and " +
-                       "@/./+/-/_ characters."})
+                       "@/./'/+/-/_ characters."})
 
     class Meta:
         model = CollabUser
@@ -148,12 +148,12 @@ class CollabUserChangeForm(UserChangeForm):
     Modify the Django UserChangeForm with upated char limits for username
     """
     username = forms.RegexField(
-        max_length=75, regex=r"^[\w.@+-]+$",
+        max_length=75, regex=r"^[\w.@'+-]+$",
         help_text="Required. 75 characters or fewer. Letters, digits and " +
-                  "@/./+/-/_ only.",
+                  "@/./'/+/-/_ only.",
         error_messages={
             'invalid': "This value may contain only letters, numbers and " +
-                       "@/./+/-/_ characters."})
+                       "@/./'/+/-/_ characters."})
 
     class Meta:
         model = CollabUser
