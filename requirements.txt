@@ -27,3 +27,4 @@ django-markup
 django-widgeter
 feedparser
 django-mptt
+requests==2.0.1
