@@ -1,5 +1,5 @@
 Django==1.5.4
-South
+South==0.7.6
 pytz
 django-dynamicresponse
 wsgiref
@@ -13,7 +13,8 @@ xlrd
 python-memcached
 django-ordered-model
 django-pipeline==1.3.11
-slimit
+slimit==0.8.1
+ply==3.4
 django-cache-tools
 django-haystack
 pyelasticsearch
@@ -22,7 +23,7 @@ django-crispy-forms==1.3.1
 django-localflavor-us
 pycrypto
 django-fields==0.2.1
-markdown
+markdown==2.3.1
 django-markup
 django-widgeter
 feedparser
