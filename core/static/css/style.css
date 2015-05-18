@@ -96,6 +96,7 @@ table{font-family:"Avenir Next",Arial,sans-serif;}
 th{font-family:"Avenir Next Demi",Arial,sans-serif;font-weight:600;text-align:left;}
 th,td{padding:0.5em;}
 td{border:1px solid #dbe4ed;}
+.no-border th, .no-border td { border: 0px; }
 form.action{display:inline-block;}
 legend{font-family:"Avenir Next",Arial,sans-serif;font-size:225%;font-weight:normal;line-height:175%;}
 .title_align_right{margin:2em 0 0.5em;text-align:right;width:25.1%;font-size:125%;}
