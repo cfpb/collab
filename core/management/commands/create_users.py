@@ -40,7 +40,8 @@ class Command(BaseCommand):
                 'username': email
             }
 
-            user = get_user_model(**user_attr)
+            userModel = get_user_model()
+            user = userModel(**user_attr)
             user.save()
 
             person_attr = {
