@@ -3,7 +3,6 @@
 *.sqlite
 *.sublime*
 *\.*swp
-.idea
 
 .coverage
 .DS_Store
