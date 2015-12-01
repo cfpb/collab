@@ -47,7 +47,7 @@ class Command(BaseCommand):
             person_attr = {
                 'office_location': office_location,
                 'allow_tagging': True,
-                'photo_file': 'avatars/default1.jpg',
+                'photo_file': 'avatars/default.jpg',
                 'stub': username.replace('.', ''),
                 'office_phone': '5555555555',
                 'user': user,
