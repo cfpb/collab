@@ -17,8 +17,7 @@ slimit==0.8.1
 ply==3.4
 django-cache-tools==0.1.1
 django-haystack==2.3.2
-# https://github.com/bennylope/elasticstack/pull/15
-git+git://github.com/m3brown/elasticstack#egg=elasticstack
+elasticstack==0.3.0
 elasticsearch==2.1.0
 django-reversion==1.7
 django-crispy-forms==1.3.1
