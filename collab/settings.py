@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     'cache_tools',
     'crispy_forms',
     'haystack',
+    'elasticstack',
     'mptt',
     'pipeline',
     'reversion',
@@ -218,3 +219,7 @@ from settings_helper import load_app_middlewares
 MIDDLEWARE_CLASSES = load_app_middlewares(MIDDLEWARE_CLASSES)
 
 COMMENTS_APP = 'core.custom_comments'
+
+# If using elasticsearch, override search_analyzer for ngram/edgengram fields.
+# Otherwise, searching for "sample" will return any results that start with "sam"
+ELASTICSEARCH_DEFAULT_NGRAM_SEARCH_ANALYZER = 'standard'
