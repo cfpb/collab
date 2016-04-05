@@ -8,4 +8,3 @@ factory-boy==1.2.0
 django-factory-boy==1.0.0
 BeautifulSoup4==4.4.1
 django-dynamic-fixture==1.8.5
-pillow==3.0.0
