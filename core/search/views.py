@@ -1,3 +1,5 @@
+# from __future__ import unicode_literals
+
 import re
 import itertools
 
@@ -10,6 +12,7 @@ from django.core.urlresolvers import reverse
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_response_exempt, csrf_exempt
 from django.conf import settings
+from django.utils.encoding import smart_text
 
 from haystack import connections
 from haystack.query import SearchQuerySet
@@ -93,9 +96,9 @@ def _create_category(label, category, term, search_slug, link, results_len):
 def search(req, term='', index=''):
     if term == '':
         if req.method == 'POST':
-            term = req.POST.get('term', '')
+            term = smart_text(req.POST.get('term', ''))
         else:
-            term = req.GET.get('term', '')
+            term = smart_text(req.GET.get('term', ''))
 
     term = term.strip()
     if term == '':
