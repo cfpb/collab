@@ -31,9 +31,9 @@
 function collapse_results() {
     $('.results-group').each(function(i) {
         var results = $(this).find("ol").children("li");
-        if (results.length > 2) {
-            results.hide().slice(0, 2).show();
-            var link = $("<a class=\"more_results btn\" href=\"#\">" + (results.length - 2) + " More results</a>");
+        if (results.length > 5) {
+            results.hide().slice(0, 5).show();
+            var link = $("<a class=\"more_results btn\" href=\"#\">" + (results.length - 5) + " More results</a>");
             link.click(function(e) {
                 e.preventDefault();
                 results.slideDown();
