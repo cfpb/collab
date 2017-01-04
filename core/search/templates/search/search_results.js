@@ -6,7 +6,7 @@ function collapseResults( group ) {
         return;
     }
     
-    var results = $( group ).find( 'ol' ).children( 'li' );
+    var results = group.find( 'ol' ).children( 'li' );
     if ( results.length > 5 && dataModel !== openGroup ) {
         results.hide().slice( 0, 5 ).show();
         var link = $( '<a class="more_results btn" href="#">' + ( results.length - 5 ) + ' More results</a>' );
@@ -31,17 +31,27 @@ function collapseResults( group ) {
 
             if ( results.length > 0 ) {
                 wikiCount.html( results.length );
-                for ( var count = 0; count < results.length; count++ ) {
-                    var link = results[count].title.replace( ' ', '_' );
-                    var html = '<li><a href="/wiki/index.php/' + link + '">';
-                    html += results[count].title;
-                    html += '</a> <br/>';
-                    html += results[count].snippet
-                            .replace( /<(\/)?div.*?>/gm, '' )
-                            .replace( /<(\/)?span.*?>/gm, "<$1b>" );
-                    html += '</li>';
-                    wikiList.append( html );
+                
+                var suggestedData = results[0];
+                var suggestedLink = suggestedData.title.replace( ' ', '_' );
+                var suggestedContent = suggestedData.snippet.replace( /<(\/)?div.*?>/gm, '' );
+                var suggestedHTML = '<div class="suggested-result">';
+                    suggestedHTML += '<h4>Suggested result</h4>';
+                    suggestedHTML += '<a href="/wiki/index.php/' + suggestedLink + '">';
+                    suggestedHTML += suggestedData.title + '</a>';
+                    suggestedHTML += '<p>' + suggestedContent + '</p></div>';
+                wikiList.prepend( suggestedHTML );
+
+                for ( var count = 1; count < results.length; count++ ) {
+                    var resultData = results[count];
+                    var resultLink = resultData.title.replace( ' ', '_' );
+                    var resultContent = resultData.snippet.replace( /<(\/)?div.*?>/gm, '' );
+                    var resultHTML = '<li><a href="/wiki/index.php/' + resultLink + '">';
+                        resultHTML += resultData.title + '</a>';
+                        resultHTML += '<p>' + suggestedContent + '</p></li>';
+                    wikiList.append( resultHTML );
                 }
+                
                 collapseResults( wikiGroup );
             } else {
                 wikiGroup.hide();
