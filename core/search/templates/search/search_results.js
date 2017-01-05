@@ -48,7 +48,7 @@ function collapseResults( group ) {
                     var resultContent = resultData.snippet.replace( /<(\/)?div.*?>/gm, '' );
                     var resultHTML = '<li><a href="/wiki/index.php/' + resultLink + '">';
                         resultHTML += resultData.title + '</a>';
-                        resultHTML += '<p>' + suggestedContent + '</p></li>';
+                        resultHTML += '<p>' + resultContent + '</p></li>';
                     wikiList.append( resultHTML );
                 }
                 
