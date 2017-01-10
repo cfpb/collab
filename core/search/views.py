@@ -75,9 +75,6 @@ def search_results_json(req, term='', context_models=''):
                                                 r.url,
                                                 results_count))
 
-    all_results.append({'category': 'Wiki', 'term': term,
-                        'search_slug': 'wiki'})
-
     return json_response(all_results)
 
 
