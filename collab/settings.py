@@ -222,4 +222,19 @@ COMMENTS_APP = 'core.custom_comments'
 
 # If using elasticsearch, override search_analyzer for ngram/edgengram fields.
 # Otherwise, searching for "sample" will return any results that start with "sam"
-ELASTICSEARCH_DEFAULT_NGRAM_SEARCH_ANALYZER = 'standard'
+ELASTICSEARCH_INDEX_SETTINGS = {
+    'settings': {
+        'analysis': {
+            'analyzer': {
+                'default': {
+                    'type': 'custom',
+                    'tokenizer': 'whitespace', #'standard',
+                    'filter': ['lowercase', 'asciifolding']
+                    },
+                }
+            }
+        }
+    }
+
+
+ELASTICSEARCH_DEFAULT_NGRAM_SEARCH_ANALYZER = 'default'

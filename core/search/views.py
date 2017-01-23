@@ -1,5 +1,6 @@
 import re
 import itertools
+from collections import OrderedDict
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
@@ -19,10 +20,19 @@ from core.utils import json_response
 from core.models import Person
 from core.taggit.models import Tag
 from core.search.models import SearchableTool
+from core.search.models import SuggestedSearchResult
 
+from xml.sax.saxutils import escape
 
 TEMPLATE_PATH = 'search/'
 
+# The search terms that are passed to Elasticsearch need to be escaped
+# to HTML entities because that's how Elastic looks them up. This table
+# is used to do that; it's ordered because you need to guarantee that
+# ampersands are replaced first in order not to break the string.
+html_escape_table = OrderedDict()
+html_escape_table['&'] = '&amp;'
+html_escape_table["'"] = '&#39;'
 
 def _get_indexes():
     index = connections['default'].get_unified_index()
@@ -57,6 +67,7 @@ def index(req, term=''):
 def search_results_json(req, term='', context_models=''):
     all_results = []
     term = req.GET.get('term', '')
+    escaped_term = escape(term, html_escape_table)
     context_models = req.GET.get('model', '').split(',')
 
     p = {}
@@ -65,7 +76,7 @@ def search_results_json(req, term='', context_models=''):
                      context_models else index[1].PRIORITY)
 
     for index in indexes:
-        results = SearchQuerySet().filter(content=term).models(index[0])
+        results = SearchQuerySet().filter(content=escaped_term).models(index[0])
         results_count = results.count()
         for r in results[:5]:
             all_results.append(_create_category(r.display,
@@ -74,7 +85,7 @@ def search_results_json(req, term='', context_models=''):
                                                 r.model_name,
                                                 r.url,
                                                 results_count))
-
+    
     return json_response(all_results)
 
 
@@ -98,6 +109,9 @@ def search(req, term='', index=''):
     term = term.strip()
     if term == '':
         return HttpResponseRedirect(reverse('search:index'))
+    escaped_term = escape(term, html_escape_table)
+
+    suggested_results = SuggestedSearchResult.objects.filter(search_term=term.lower())
 
     p = {}
     p['term'] = term
@@ -107,10 +121,10 @@ def search(req, term='', index=''):
         for i in _get_indexes():
             if i[0].__name__.lower() == index:
                 p['results'] = SearchQuerySet().filter(
-                    content=term).models(i[0]).order_by('index_priority', 'index_name', 'index_sort')
+                    content=escaped_term).models(i[0]).order_by('index_priority', 'index_name')
     else:
         p['results'] = SearchQuerySet().filter(
-            content=term).order_by('index_priority', 'index_name', 'index_sort')
+            content=escaped_term).order_by('index_priority', 'index_name')
 
     if settings.WIKI_INSTALLED:
         p['wiki_installed'] = True
