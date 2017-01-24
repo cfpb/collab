@@ -18,3 +18,9 @@ class SuggestedSearchResult(models.Model):
 
     def __unicode__(self):
         return u"%s" % self.search_term
+
+    def to_dict(self):
+
+        return {'search_term': self.search_term,
+                'suggested_url': self.suggested_url,
+                'description': self.description}
