@@ -115,6 +115,7 @@ def search(req, term='', index=''):
 
     p = {}
     p['term'] = term
+    p['suggested_results'] = [res.to_dict() for res in suggested_results]
 
     if index != '' and index != 'all':
         p['index'] = index
