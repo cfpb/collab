@@ -8,7 +8,7 @@
         <div id="search_accordion">
 
             {% if not index %}
-            <div class="results-group" data-model="Wiki">
+            <div class="results-group" data-model="Wiki" style="display:none;">
                 <h3>Wiki (<span id="wiki_count_hook"></span> results)</h3>
                 <ol id="wiki_results_hook"></ol>
             </div>
@@ -17,7 +17,7 @@
             {% regroup results by index_name as by_index %}
             
             {% if results|length < 1 %}
-                <div class="no-results-message">
+                <div class="no-results-message" style="display:none;">
                     <h3>There are no results that match your search.</h3>
                     <p>Please check your spelling or try a different search term.</p>
                 </div>
