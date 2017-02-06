@@ -31,7 +31,7 @@ function collapseResults( group ) {
             var noResult = $( '.no-results-message' );
 
             if ( results.length > 0 ) {
-                noResult.remove();
+                wikiGroup.show();
                 wikiCount.html( results.length );
                 
                 var suggestedData = results[0];
@@ -56,7 +56,7 @@ function collapseResults( group ) {
                 
                 collapseResults( wikiGroup );
             } else {
-                wikiGroup.hide();
+                noResult.show();
             };
         } );
     {% endautoescape %}
