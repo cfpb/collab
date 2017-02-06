@@ -28,8 +28,10 @@ function collapseResults( group ) {
             var wikiGroup = $( '.results-group[data-model="Wiki"]' );
             var wikiCount = wikiGroup.find( '#wiki_count_hook' );
             var wikiList = wikiGroup.find( '#wiki_results_hook' );
+            var noResult = $( '.no-results-message' );
 
             if ( results.length > 0 ) {
+                noResult.remove();
                 wikiCount.html( results.length );
                 
                 var suggestedData = results[0];
