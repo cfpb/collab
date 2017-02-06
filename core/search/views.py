@@ -33,6 +33,7 @@ TEMPLATE_PATH = 'search/'
 html_escape_table = OrderedDict()
 html_escape_table['&'] = '&amp;'
 html_escape_table["'"] = '&#39;'
+html_escape_table['$'] = '%24'
 
 def _get_indexes():
     index = connections['default'].get_unified_index()
@@ -130,7 +131,7 @@ def search(req, term='', index=''):
     if settings.WIKI_INSTALLED:
         p['wiki_installed'] = True
         p['wiki_search_json_url'] = settings.WIKI_SEARCH_URL % \
-            ('50', term)
+            ('50', escaped_term)
     p['WIKI_URL_BASE'] = settings.WIKI_URL_BASE
 
     return render_to_response(TEMPLATE_PATH + 'search_results.html', p,
