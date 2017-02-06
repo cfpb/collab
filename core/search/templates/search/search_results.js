@@ -31,18 +31,8 @@ function collapseResults( group ) {
 
             if ( results.length > 0 ) {
                 wikiCount.html( results.length );
-                
-                var suggestedData = results[0];
-                var suggestedLink = suggestedData.title.replace( ' ', '_' );
-                var suggestedContent = suggestedData.snippet.replace( /<(\/)?div.*?>/gm, '' );
-                var suggestedHTML = '<div class="suggested-result">';
-                    suggestedHTML += '<h4>Suggested result</h4>';
-                    suggestedHTML += '<a href="/wiki/index.php/' + suggestedLink + '">';
-                    suggestedHTML += suggestedData.title + '</a>';
-                    suggestedHTML += '<p>' + suggestedContent + '</p></div>';
-                wikiList.prepend( suggestedHTML );
 
-                for ( var count = 1; count < results.length; count++ ) {
+                for ( var count = 0; count < results.length; count++ ) {
                     var resultData = results[count];
                     var resultLink = resultData.title.replace( ' ', '_' );
                     var resultContent = resultData.snippet.replace( /<(\/)?div.*?>/gm, '' );
@@ -64,6 +54,6 @@ $( '.results-group' ).each( function( i ) {
    var dataModel = $( this ).attr( 'data-model' );
 
    if ( dataModel !== 'Wiki' ) {
-       collapseResults( this );
+       collapseResults( $( this ) );
    }
 } );

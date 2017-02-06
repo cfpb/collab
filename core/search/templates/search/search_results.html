@@ -10,6 +10,17 @@
             {% if not index %}
             <div class="results-group" data-model="Wiki">
                 <h3>Wiki (<span id="wiki_count_hook"></span> results)</h3>
+
+                {% if suggested_results %}
+                <div class="suggested-result">
+                    <h4>Suggested result</h4>
+                    <a href="{{ suggested_results.0.suggested_url }}">
+                       {{ suggested_results.0.name }}
+                    </a>
+                    <p>{{ suggested_results.0.description }}</p>
+                </div>
+                {% endif %}
+
                 <ol id="wiki_results_hook"></ol>
             </div>
             {% endif %}
