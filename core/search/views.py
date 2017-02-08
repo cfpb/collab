@@ -19,10 +19,7 @@ from haystack.query import SearchQuerySet
 from core.utils import json_response
 from core.models import Person
 from core.taggit.models import Tag
-from core.search.models import SearchableTool
 from core.search.models import SuggestedSearchResult
-
-from xml.sax.saxutils import escape
 
 TEMPLATE_PATH = 'search/'
 
@@ -33,7 +30,13 @@ TEMPLATE_PATH = 'search/'
 html_escape_table = OrderedDict()
 html_escape_table['&'] = '&amp;'
 html_escape_table["'"] = '&#39;'
-html_escape_table['$'] = '%24'
+
+
+def escape(text, table):
+    result = text
+    for k, v in table.items():
+        result = result.replace(k, v)
+    return result
 
 def _get_indexes():
     index = connections['default'].get_unified_index()
