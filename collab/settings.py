@@ -228,7 +228,7 @@ ELASTICSEARCH_INDEX_SETTINGS = {
             'analyzer': {
                 'default': {
                     'type': 'custom',
-                    'tokenizer': 'whitespace', #'standard',
+                    'tokenizer': 'standard',
                     'filter': ['lowercase', 'asciifolding']
                     },
                 }
