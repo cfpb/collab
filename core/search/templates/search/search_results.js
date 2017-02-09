@@ -22,7 +22,7 @@ function collapseResults( group ) {
 
 {% if wiki_installed %}
     {% autoescape off %}
-        $.getJSON( '{{ wiki_search_json_url }}', function( data ) {
+        $.getJSON( "{{ wiki_search_json_url }}", function( data ) {
             var results = data.query.search;
             var dataModel = 'Wiki';
             var wikiGroup = $( '.results-group[data-model="Wiki"]' );
