@@ -133,6 +133,8 @@ def search(req, term='', index=''):
 
     if settings.WIKI_INSTALLED:
         p['wiki_installed'] = True
+	escaped_term = "'" + escaped_term
+	escaped_term = escaped_term.replace('&amp;', '%26')
         p['wiki_search_json_url'] = settings.WIKI_SEARCH_URL % \
             ('50', escaped_term)
     p['WIKI_URL_BASE'] = settings.WIKI_URL_BASE
