@@ -24,6 +24,7 @@ function collapseResults( group ) {
     {% autoescape off %}
         $.getJSON( '{{ wiki_search_json_url }}', function( data ) {
             var results = data.query.search;
+            var totalResults = data.query.searchinfo.totalhits;
             var dataModel = 'Wiki';
             var wikiGroup = $( '.results-group[data-model="Wiki"]' );
             var wikiCount = wikiGroup.find( '#wiki_count_hook' );
@@ -31,8 +32,12 @@ function collapseResults( group ) {
             var noResult = $( '.no-results-message' );
 
             if ( results.length > 0 ) {
+                if (totalResults > results.length) {
+                    wikiCount.html( 'showing first 50 results of ' + totalResults );
+                } else {
+                    wikiCount.html( results.length );
+                }
                 wikiGroup.show();
-                wikiCount.html( results.length );
                 
                 var suggestedData = results[0];
                 var suggestedLink = suggestedData.title.replace( ' ', '_' );
@@ -66,6 +71,6 @@ $( '.results-group' ).each( function( i ) {
    var dataModel = $( this ).attr( 'data-model' );
 
    if ( dataModel !== 'Wiki' ) {
-       collapseResults( this );
+       collapseResults( $( this ) );
    }
 } );
