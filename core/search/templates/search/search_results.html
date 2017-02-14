@@ -8,7 +8,7 @@
         <div id="search_accordion">
 
             {% if not index %}
-            <div class="results-group" data-model="Wiki">
+            <div class="results-group" data-model="Wiki" style="display:none;">
                 <h3>Wiki (<span id="wiki_count_hook"></span> results)</h3>
 
                 {% if suggested_results %}
@@ -26,42 +26,51 @@
             {% endif %}
 
             {% regroup results by index_name as by_index %}
+            
+            {% if results|length < 1 %}
+                <div class="no-results-message" style="display:none;">
+                    <h3>There are no results that match your search.</h3>
+                    <p>Please check your spelling or try a different search term.</p>
+                </div>
+            {% else %}
 
-            {% for results_by_index in by_index %}
-            <div class="results-group" data-model="{{ results_by_index.grouper }}">
-                <h3>{{ results_by_index.grouper }} ({{ results_by_index.list|length }} results)</h3>
+                {% for results_by_index in by_index %}
+                <div class="results-group" data-model="{{ results_by_index.grouper }}">
+                    <h3>{{ results_by_index.grouper }} ({{ results_by_index.list|length }} results)</h3>
 
-                {% regroup results_by_index.list by content_type as by_content %}
-                {% for results_by_content in by_content %}
-                    {% if results_by_content.grouper == 'core.person' %}
-                            <div class="profile_images">
-                                {% for p in results_by_content.list %}
-                                    <a href="{{ p.url }}">
-                                        <img class="tiny_photo" src="{{ p.image }}"/>
-                                        <span>{{ p.display }}</span>
-                                    </a>
+                    {% regroup results_by_index.list by content_type as by_content %}
+                    {% for results_by_content in by_content %}
+                        {% if results_by_content.grouper == 'core.person' %}
+                                <div class="profile_images">
+                                    {% for p in results_by_content.list %}
+                                        <a href="{{ p.url }}">
+                                            <img class="tiny_photo" src="{{ p.image }}"/>
+                                            <span>{{ p.display }}</span>
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                        {% else %}
+                            <ol>
+                                {% for item in results_by_content.list %}
+                                    <li>
+                                        <a name="item_url" href="{{ item.url }}">
+                                            {{ item.display }}
+                                        </a>
+                                        {% if item.description %}
+                                            <p>
+                                                {{ item.description }}
+                                            </p>
+                                        {% endif %}
+                                    </li>
                                 {% endfor %}
-                            </div>
-                    {% else %}
-                        <ol>
-                            {% for item in results_by_content.list %}
-                                <li>
-                                    <a name="item_url" href="{{ item.url }}">
-                                        {{ item.display }}
-                                    </a>
-                                    {% if item.description %}
-                                        <p>
-                                            {{ item.description }}
-                                        </p>
-                                    {% endif %}
-                                </li>
-                            {% endfor %}
-                        </ol>
-                    {% endif %}
-                {% endfor %}
+                            </ol>
+                        {% endif %}
+                    {% endfor %}
 
-            </div>
-            {% endfor %}
+                </div>
+                {% endfor %}
+        
+            {% endif %}
 
         </div>
     </div>
