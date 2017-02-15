@@ -22,15 +22,32 @@ function collapseResults( group ) {
 
 {% if wiki_installed %}
     {% autoescape off %}
-        $.getJSON( '{{ wiki_search_json_url }}', function( data ) {
+        $.getJSON( "{{ wiki_search_json_url }}", function( data ) {
             var results = data.query.search;
+            var totalResults = data.query.searchinfo.totalhits;
             var dataModel = 'Wiki';
             var wikiGroup = $( '.results-group[data-model="Wiki"]' );
             var wikiCount = wikiGroup.find( '#wiki_count_hook' );
             var wikiList = wikiGroup.find( '#wiki_results_hook' );
+            var noResult = $( '.no-results-message' );
 
             if ( results.length > 0 ) {
-                wikiCount.html( results.length );
+                if (totalResults > results.length) {
+                    wikiCount.html( 'showing first 50 results of ' + totalResults );
+                } else {
+                    wikiCount.html( results.length );
+                }
+                wikiGroup.show();
+                
+                var suggestedData = results[0];
+                var suggestedLink = suggestedData.title.replace( ' ', '_' );
+                var suggestedContent = suggestedData.snippet.replace( /<(\/)?div.*?>/gm, '' );
+                var suggestedHTML = '<div class="suggested-result">';
+                    suggestedHTML += '<h4>Suggested result</h4>';
+                    suggestedHTML += '<a href="/wiki/index.php/' + suggestedLink + '">';
+                    suggestedHTML += suggestedData.title + '</a>';
+                    suggestedHTML += '<p>' + suggestedContent + '</p></div>';
+                wikiList.prepend( suggestedHTML );
 
                 for ( var count = 0; count < results.length; count++ ) {
                     var resultData = results[count];
@@ -44,7 +61,7 @@ function collapseResults( group ) {
                 
                 collapseResults( wikiGroup );
             } else {
-                wikiGroup.hide();
+                noResult.show();
             };
         } );
     {% endautoescape %}
