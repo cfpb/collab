@@ -41,14 +41,16 @@
                     {% regroup results_by_index.list by content_type as by_content %}
                     {% for results_by_content in by_content %}
                         {% if results_by_content.grouper == 'core.person' %}
-                                <div class="profile_images">
+                                <ol class="profile_images cf">
                                     {% for p in results_by_content.list %}
-                                        <a href="{{ p.url }}">
-                                            <img class="tiny_photo" src="{{ p.image }}"/>
-                                            <span>{{ p.display }}</span>
-                                        </a>
+                                        <li>
+                                            <a href="{{ p.url }}">
+                                                <img class="tiny_photo" src="{{ p.image }}"/>
+                                                <span>{{ p.display }}</span>
+                                            </a>
+                                        </li>
                                     {% endfor %}
-                                </div>
+                                </ol>
                         {% else %}
                             <ol>
                                 {% for item in results_by_content.list %}
