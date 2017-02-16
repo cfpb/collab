@@ -38,16 +38,6 @@ function collapseResults( group ) {
                     wikiCount.html( results.length );
                 }
                 wikiGroup.show();
-                
-                var suggestedData = results[0];
-                var suggestedLink = suggestedData.title.replace( ' ', '_' );
-                var suggestedContent = suggestedData.snippet.replace( /<(\/)?div.*?>/gm, '' );
-                var suggestedHTML = '<div class="suggested-result">';
-                    suggestedHTML += '<h4>Suggested result</h4>';
-                    suggestedHTML += '<a href="/wiki/index.php/' + suggestedLink + '">';
-                    suggestedHTML += suggestedData.title + '</a>';
-                    suggestedHTML += '<p>' + suggestedContent + '</p></div>';
-                wikiList.prepend( suggestedHTML );
 
                 for ( var count = 0; count < results.length; count++ ) {
                     var resultData = results[count];
