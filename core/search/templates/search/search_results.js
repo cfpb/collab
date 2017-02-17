@@ -9,7 +9,12 @@ function collapseResults( group ) {
     var results = group.find( 'ol' ).children( 'li' );
     if ( results.length > 5 && dataModel !== openGroup ) {
         results.hide().slice( 0, 5 ).show();
-        var link = $( '<a class="more_results btn" href="#">' + ( results.length - 5 ) + ' more results</a>' );
+        if (results.length > 50 && dataModel != 'Staff Directory') {
+            var numMore = 45;
+        } else {
+            var numMore = results.length - 5;
+        }
+        var link = $( '<a class="more_results btn" href="#">' + numMore + ' more results</a>' );
         link.click( function( e ) {
             e.preventDefault();
             results.slideDown();
