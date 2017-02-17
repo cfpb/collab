@@ -36,7 +36,14 @@
 
                 {% for results_by_index in by_index %}
                 <div class="results-group" data-model="{{ results_by_index.grouper }}">
-                    <h3>{{ results_by_index.grouper }} ({{ results_by_index.list|length }} results)</h3>
+                    <h3>
+                        {{ results_by_index.grouper }}
+                    {% if results_by_index.list|length > 50 and results_by_index.grouper != 'Staff Directory' %}
+                        (showing first 50 results of {{ results_by_index.list|length }})
+                    {% else %}
+                        ({{ results_by_index.list|length }} results)
+                    {% endif %}
+                    </h3>
 
                     {% regroup results_by_index.list by content_type as by_content %}
                     {% for results_by_content in by_content %}
@@ -52,8 +59,8 @@
                                     {% endfor %}
                                 </ol>
                         {% else %}
-                            <ol>
-                                {% for item in results_by_content.list %}
+                            <ol data-results-by-content-grouper="{{ results_by_content.grouper }}">
+                               {% for item in results_by_content.list|slice:":50" %}
                                     <li>
                                         <a name="item_url" href="{{ item.url }}">
                                             {{ item.display }}
