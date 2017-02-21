@@ -9,7 +9,12 @@ function collapseResults( group ) {
     var results = group.find( 'ol' ).children( 'li' );
     if ( results.length > 5 && dataModel !== openGroup ) {
         results.hide().slice( 0, 5 ).show();
-        var link = $( '<a class="more_results btn" href="#">' + ( results.length - 5 ) + ' more results</a>' );
+        if (results.length > 50 && dataModel != 'Staff Directory') {
+            var numMore = 45;
+        } else {
+            var numMore = results.length - 5;
+        }
+        var link = $( '<a class="more_results btn" href="#">' + numMore + ' more results</a>' );
         link.click( function( e ) {
             e.preventDefault();
             results.slideDown();
@@ -22,7 +27,7 @@ function collapseResults( group ) {
 
 {% if wiki_installed %}
     {% autoescape off %}
-        $.getJSON( '{{ wiki_search_json_url }}', function( data ) {
+        $.getJSON( "{{ wiki_search_json_url }}", function( data ) {
             var results = data.query.search;
             var totalResults = data.query.searchinfo.totalhits;
             var dataModel = 'Wiki';
@@ -38,18 +43,8 @@ function collapseResults( group ) {
                     wikiCount.html( results.length );
                 }
                 wikiGroup.show();
-                
-                var suggestedData = results[0];
-                var suggestedLink = suggestedData.title.replace( ' ', '_' );
-                var suggestedContent = suggestedData.snippet.replace( /<(\/)?div.*?>/gm, '' );
-                var suggestedHTML = '<div class="suggested-result">';
-                    suggestedHTML += '<h4>Suggested result</h4>';
-                    suggestedHTML += '<a href="/wiki/index.php/' + suggestedLink + '">';
-                    suggestedHTML += suggestedData.title + '</a>';
-                    suggestedHTML += '<p>' + suggestedContent + '</p></div>';
-                wikiList.prepend( suggestedHTML );
 
-                for ( var count = 1; count < results.length; count++ ) {
+                for ( var count = 0; count < results.length; count++ ) {
                     var resultData = results[count];
                     var resultLink = resultData.title.replace( ' ', '_' );
                     var resultContent = resultData.snippet.replace( /<(\/)?div.*?>/gm, '' );

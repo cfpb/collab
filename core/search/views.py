@@ -1,5 +1,6 @@
 import re
 import itertools
+from collections import OrderedDict
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
@@ -10,6 +11,7 @@ from django.core.urlresolvers import reverse
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_response_exempt, csrf_exempt
 from django.conf import settings
+from django.utils.encoding import smart_text
 
 from haystack import connections
 from haystack.query import SearchQuerySet
@@ -17,11 +19,24 @@ from haystack.query import SearchQuerySet
 from core.utils import json_response
 from core.models import Person
 from core.taggit.models import Tag
-from core.search.models import SearchableTool
-
+from core.search.models import SuggestedSearchResult
 
 TEMPLATE_PATH = 'search/'
 
+# The search terms that are passed to Elasticsearch need to be escaped
+# to HTML entities because that's how Elastic looks them up. This table
+# is used to do that; it's ordered because you need to guarantee that
+# ampersands are replaced first in order not to break the string.
+html_escape_table = OrderedDict()
+html_escape_table['&'] = '&amp;'
+html_escape_table["'"] = '&#39;'
+
+
+def escape(text, table):
+    result = text
+    for k, v in table.items():
+        result = result.replace(k, v)
+    return result
 
 def _get_indexes():
     index = connections['default'].get_unified_index()
@@ -56,6 +71,7 @@ def index(req, term=''):
 def search_results_json(req, term='', context_models=''):
     all_results = []
     term = req.GET.get('term', '')
+    escaped_term = escape(term, html_escape_table)
     context_models = req.GET.get('model', '').split(',')
 
     p = {}
@@ -64,7 +80,7 @@ def search_results_json(req, term='', context_models=''):
                      context_models else index[1].PRIORITY)
 
     for index in indexes:
-        results = SearchQuerySet().filter(content=term).models(index[0])
+        results = SearchQuerySet().filter(content=escaped_term).models(index[0])
         results_count = results.count()
         for r in results[:5]:
             all_results.append(_create_category(r.display,
@@ -73,7 +89,7 @@ def search_results_json(req, term='', context_models=''):
                                                 r.model_name,
                                                 r.url,
                                                 results_count))
-
+    
     return json_response(all_results)
 
 
@@ -90,31 +106,37 @@ def _create_category(label, category, term, search_slug, link, results_len):
 def search(req, term='', index=''):
     if term == '':
         if req.method == 'POST':
-            term = req.POST.get('term', '')
+            term = smart_text(req.POST.get('term', ''))
         else:
-            term = req.GET.get('term', '')
+            term = smart_text(req.GET.get('term', ''))
 
     term = term.strip()
     if term == '':
         return HttpResponseRedirect(reverse('search:index'))
+    escaped_term = escape(term, html_escape_table)
+
+    suggested_results = SuggestedSearchResult.objects.filter(search_term=term.lower())
 
     p = {}
     p['term'] = term
+    p['suggested_results'] = [res.to_dict() for res in suggested_results]
 
     if index != '' and index != 'all':
         p['index'] = index
         for i in _get_indexes():
             if i[0].__name__.lower() == index:
                 p['results'] = SearchQuerySet().filter(
-                    content=term).models(i[0]).order_by('index_priority', 'index_name', 'index_sort')
+                    content=escaped_term).models(i[0]).order_by('index_priority', 'index_name')
     else:
         p['results'] = SearchQuerySet().filter(
-            content=term).order_by('index_priority', 'index_name', 'index_sort')
+            content=escaped_term).order_by('index_priority', 'index_name')
 
     if settings.WIKI_INSTALLED:
         p['wiki_installed'] = True
+	escaped_term = "'" + escaped_term
+	escaped_term = escaped_term.replace('&amp;', '%26')
         p['wiki_search_json_url'] = settings.WIKI_SEARCH_URL % \
-            ('50', term)
+            ('50', escaped_term)
     p['WIKI_URL_BASE'] = settings.WIKI_URL_BASE
 
     return render_to_response(TEMPLATE_PATH + 'search_results.html', p,
