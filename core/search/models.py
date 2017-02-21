@@ -1,3 +1,6 @@
+import re
+
+from django.conf import settings
 from django.db import models
 
 
@@ -20,10 +23,10 @@ class SuggestedSearchResult(models.Model):
         return u"%s" % self.search_term
 
     def to_dict(self):
+        name = re.sub(r"(?i)^https://.+?/", "/", self.suggested_url)
+        name = name.replace(settings.WIKI_HOME + '/', '').replace('_', ' ').replace('#', ': ')
+
         return {'search_term': self.search_term,
                 'suggested_url': self.suggested_url,
-                'name': self.suggested_url
-                        .replace('https://team.cfpb.local/wiki/index.php/', '')
-                        .replace('_', ' ')
-                        .replace("#", ": "),
+                'name': name,
                 'description': self.description}
