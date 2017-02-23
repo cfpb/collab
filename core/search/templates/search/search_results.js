@@ -7,12 +7,24 @@ function collapseResults( group ) {
     }
     
     var results = group.find( 'ol' ).children( 'li' );
-    if ( results.length > 5 && dataModel !== openGroup ) {
-        results.hide().slice( 0, 5 ).show();
-        if (results.length > 50 && dataModel != 'Staff Directory') {
-            var numMore = 45;
+    if ( dataModel !== openGroup && (
+         ( dataModel == 'Staff Directory' && results.length > 20 ) ||
+         ( dataModel != 'Staff Directory' && results.length > 5 )
+    ) ) {
+        if ( dataModel == 'Staff Directory' ) {
+            results.hide().slice( 0, 20 ).show();
+            if ( results.length > 100 ) {
+                var numMore = 80;
+            } else {
+                var numMore = results.length - 20;
+            }
         } else {
-            var numMore = results.length - 5;
+            results.hide().slice( 0, 5 ).show();
+            if ( results.length > 50 ) {
+                var numMore = 45;
+            } else {
+                var numMore = results.length - 5;
+            }
         }
         var link = $( '<a class="more_results btn" href="#">' + numMore + ' more results</a>' );
         link.click( function( e ) {
