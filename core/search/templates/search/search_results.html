@@ -38,7 +38,9 @@
                 <div class="results-group" data-model="{{ results_by_index.grouper }}">
                     <h3>
                         {{ results_by_index.grouper }}
-                    {% if results_by_index.list|length > 50 and results_by_index.grouper != 'Staff Directory' %}
+                    {% if results_by_index.grouper == 'Staff Directory' and results_by_index.list|length > 100 %}
+                        (showing first 100 results of {{ results_by_index.list|length }}) 
+                    {% elif results_by_index.list|length > 50 %}
                         (showing first 50 results of {{ results_by_index.list|length }})
                     {% else %}
                         ({{ results_by_index.list|length }} results)
@@ -49,7 +51,7 @@
                     {% for results_by_content in by_content %}
                         {% if results_by_content.grouper == 'core.person' %}
                                 <ol class="profile_images cf">
-                                    {% for p in results_by_content.list %}
+                                    {% for p in results_by_content.list|slice:":100" %}
                                         <li>
                                             <a href="{{ p.url }}">
                                                 <img class="tiny_photo" src="{{ p.image }}"/>
