@@ -51,7 +51,8 @@ class RegistrationForm(forms.Form):
     office_phone = forms.CharField(max_length=100, error_messages={'required':
                                    required_validator['office_phone']})
     mobile_phone = forms.CharField(max_length=100, required=False)
-    # home_phone = forms.CharField(max_length=100, required=False)
+    home_phone = forms.CharField(max_length=100, required=False,
+                                 label="Alt phone")
     photo_file = forms.FileField(required=False)
 
     def clean_email(self):
@@ -81,6 +82,8 @@ class AccountForm(forms.Form):
     mobile_phone = forms.CharField(max_length=100, required=False)
     office_phone = forms.CharField(max_length=100, error_messages={'required':
                                    required_validator['office_phone']})
+    home_phone = forms.CharField(max_length=100, required=False,
+                                 label="Alt phone")
     office_location = forms.ModelChoiceField(
         queryset=OfficeLocation.objects.all(), required=False,
         empty_label="- - - - - - Select  - - - - -", label="Building")
@@ -92,7 +95,8 @@ class AccountForm(forms.Form):
         label="Office")
     title = forms.CharField(
         max_length=100, widget=forms.TextInput(attrs={'size': '50'}),
-        error_messages={'required': required_validator['title']})
+        error_messages={'required': required_validator['title']},
+        label='Role')
     what_i_do = forms.CharField(
         widget=forms.Textarea(attrs={'rows': '8', 'cols': '100'}),
         required=False, label="My expertise")
