@@ -5,26 +5,21 @@ function collapseResults( group ) {
     if ( dataModel == openGroup ) {
         return;
     }
+    if ( dataModel == 'Staff Directory' ) {
+        var cutOff = 20;
+        var maxResults = 100;
+    } else {
+        var cutOff = 5;
+        var maxResults = 50;
+    }
     
     var results = group.find( 'ol' ).children( 'li' );
-    if ( dataModel !== openGroup && (
-         ( dataModel == 'Staff Directory' && results.length > 20 ) ||
-         ( dataModel != 'Staff Directory' && results.length > 5 )
-    ) ) {
-        if ( dataModel == 'Staff Directory' ) {
-            results.hide().slice( 0, 20 ).show();
-            if ( results.length > 100 ) {
-                var numMore = 80;
-            } else {
-                var numMore = results.length - 20;
-            }
+    if ( results.length > cutOff ) {
+        results.hide().slice( 0, cutOff ).show();
+        if ( results.length > maxResults ) {
+            var numMore = maxResults - cutOff;
         } else {
-            results.hide().slice( 0, 5 ).show();
-            if ( results.length > 50 ) {
-                var numMore = 45;
-            } else {
-                var numMore = results.length - 5;
-            }
+            var numMore = results.length - cutOff;
         }
         var link = $( '<a class="more_results btn" href="#">' + numMore + ' more results</a>' );
         link.click( function( e ) {
