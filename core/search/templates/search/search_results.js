@@ -1,25 +1,26 @@
 function collapseResults( group ) {
     var openGroup = sessionStorage.getItem( 'openGroup' );
     var dataModel = group.attr( 'data-model' );
+    var cutOff, maxResults, numMore;
 
     if ( dataModel == openGroup ) {
         return;
     }
     if ( dataModel == 'Staff Directory' ) {
-        var cutOff = 20;
-        var maxResults = 100;
+        cutOff = 20;
+        maxResults = 100;
     } else {
-        var cutOff = 5;
-        var maxResults = 50;
+        cutOff = 5;
+        maxResults = 50;
     }
     
     var results = group.find( 'ol' ).children( 'li' );
     if ( results.length > cutOff ) {
         results.hide().slice( 0, cutOff ).show();
         if ( results.length > maxResults ) {
-            var numMore = maxResults - cutOff;
+            numMore = maxResults - cutOff;
         } else {
-            var numMore = results.length - cutOff;
+            numMore = results.length - cutOff;
         }
         var link = $( '<a class="more_results btn" href="#">' + numMore + ' more results</a>' );
         link.click( function( e ) {
