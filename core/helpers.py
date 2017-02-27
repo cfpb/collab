@@ -20,6 +20,7 @@ def user_form_data(user):
             'office_location': None if not user.person.office_location else
             user.person.office_location.id,
             'office_phone': format_phone_number(user.person.office_phone),
+            'home_phone': format_phone_number(user.person.home_phone),
             'desk_location': user.person.desk_location,
             'org_group': user.person.org_group,
             'title': user.person.title, 'what_i_do': user.person.what_i_do,

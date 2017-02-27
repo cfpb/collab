@@ -50,17 +50,19 @@ def update_user(req):
         req.user.email = req.POST['email']
         mPhone = req.POST['mobile_phone']
         oPhone = req.POST['office_phone']
+        hPhone = req.POST['home_phone']
         if mPhone != "":
             mPhone = re.sub(r'\D', "", mPhone)
         if oPhone != "":
             oPhone = re.sub(r'\D', "", oPhone)
+        if hPhone != "":
+            hPhone = re.sub(r'\D', "", hPhone)
         profile.mobile_phone = mPhone   # req.POST['mobile_phone']
         profile.office_phone = oPhone   # req.POST['office_phone']
-        profile.home_phone = ''  # req.POST['home_phone']
+        profile.home_phone = hPhone     # req.POST['home_phone']
         profile.org_group = org_group
         profile.office_location = office_location
         profile.desk_location = req.POST['desk_location']
-
         profile.title = req.POST['title']
         profile.what_i_do = req.POST['what_i_do']
         profile.current_projects = req.POST['current_projects']
@@ -104,7 +106,8 @@ def add_user(req):
         'office_location': office_location,
         'org_group': org_group,
         'office_phone': req.POST['office_phone'],
-        'mobile_phone': req.POST['mobile_phone']
+        'mobile_phone': req.POST['mobile_phone'],
+        'home_phone': req.POST['home_phone']
     }
 
     if req.FILES:

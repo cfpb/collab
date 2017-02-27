@@ -173,6 +173,7 @@ class Person(KeyableModel):
     def format_phone_numbers(self):
         self.office_phone_formatted = format_phone_number(self.office_phone)
         self.mobile_phone_formatted = format_phone_number(self.mobile_phone)
+        self.home_phone_formatted = format_phone_number(self.home_phone)
 
     def save(self, *args, **kwargs):
         if self.photo_file is None:
