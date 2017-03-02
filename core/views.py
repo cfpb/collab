@@ -96,7 +96,7 @@ def add_user(req):
     user.first_name = req.POST['first_name']
     user.last_name = req.POST['last_name']
     user.save()
-    org_group = OrgGroup(pk=req.POST['team'])
+    org_group = OrgGroup(pk=req.POST['org_group'])
     office_location = OfficeLocation(pk=req.POST['office_location'])
 
     attributes = {
