@@ -40,19 +40,21 @@ class RegistrationForm(forms.Form):
         max_length=100, label="Last name",
         error_messages={'required': required_validator['last_name']})
     title = forms.CharField(max_length=100, error_messages={'required':
-                            required_validator['title']})
+                            required_validator['title']},
+                            label="Role")
     office_location = forms.ModelChoiceField(
         queryset=OfficeLocation.objects.all(), required=False,
         empty_label="- - - - - - Select  - - - - -")
-    team = forms.ModelChoiceField(queryset=OrgGroup.objects.all().order_by(
-        'title'), error_messages={'required': required_validator['team']})
+    org_group = forms.ModelChoiceField(queryset=OrgGroup.objects.all().order_by(
+        'title'), error_messages={'required': required_validator['team']},
+        label="Office")
     email = forms.CharField(max_length=100, error_messages={'required':
                             required_validator['email']})
     office_phone = forms.CharField(max_length=100, error_messages={'required':
                                    required_validator['office_phone']})
     mobile_phone = forms.CharField(max_length=100, required=False)
     home_phone = forms.CharField(max_length=100, required=False,
-                                 label="Alt phone")
+                                 label="Alternate phone")
     photo_file = forms.FileField(required=False)
 
     def clean_email(self):
@@ -83,7 +85,7 @@ class AccountForm(forms.Form):
     office_phone = forms.CharField(max_length=100, error_messages={'required':
                                    required_validator['office_phone']})
     home_phone = forms.CharField(max_length=100, required=False,
-                                 label="Alt phone")
+                                 label="Alternate phone")
     office_location = forms.ModelChoiceField(
         queryset=OfficeLocation.objects.all(), required=False,
         empty_label="- - - - - - Select  - - - - -", label="Building")
