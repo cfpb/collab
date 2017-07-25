@@ -50,8 +50,7 @@ class RegistrationForm(forms.Form):
         label="Office")
     email = forms.CharField(max_length=100, error_messages={'required':
                             required_validator['email']})
-    office_phone = forms.CharField(max_length=100, error_messages={'required':
-                                   required_validator['office_phone']})
+    office_phone = forms.CharField(max_length=100, required=False)
     mobile_phone = forms.CharField(max_length=100, required=False)
     home_phone = forms.CharField(max_length=100, required=False,
                                  label="Alternate phone")
@@ -81,9 +80,8 @@ class AccountForm(forms.Form):
     email = forms.CharField(
         max_length=100, widget=forms.TextInput(attrs={'size': '50'}),
         error_messages={'required': required_validator['email']})
+    office_phone = forms.CharField(max_length=100, required=False)
     mobile_phone = forms.CharField(max_length=100, required=False)
-    office_phone = forms.CharField(max_length=100, error_messages={'required':
-                                   required_validator['office_phone']})
     home_phone = forms.CharField(max_length=100, required=False,
                                  label="Alternate phone")
     office_location = forms.ModelChoiceField(
