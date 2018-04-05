@@ -145,6 +145,7 @@ class Person(KeyableModel):
     schools_i_attended = models.TextField(null=True, blank=True)
     allow_tagging = models.BooleanField(default=True)
     email_notifications = models.BooleanField(default=False)
+    hide_profile = models.BooleanField(default=False)
     tags = TaggableManager()
     start_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
