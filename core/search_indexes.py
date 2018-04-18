@@ -33,4 +33,6 @@ class PersonIndex(indexes.SearchIndex, indexes.Indexable):
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
-        return self.get_model().objects.filter(user__is_active=True)
+        return self.get_model().objects.filter(
+            user__is_active=True).filter(
+            hide_profile=False)
