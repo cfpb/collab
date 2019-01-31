@@ -92,6 +92,12 @@ Follow these steps to set up collab:
 
 ## Testing
 
+To run tests:
+
+```
+python manage.py test
+```
+
 Models should have a robust set of unit tests.
 
 When writing unit tests for models, try to separate functionality which needs the DB from functionality which does 
