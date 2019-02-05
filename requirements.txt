@@ -35,4 +35,4 @@ paramiko==1.16.0
 urllib3==1.14
 ecdsa==0.13
 futures==3.0.3
-odict==1.5.1
+ordereddict==1.1
