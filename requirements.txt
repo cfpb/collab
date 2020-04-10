@@ -1,4 +1,4 @@
-Django==1.5.4
+Django==1.11.28
 South==0.7.6
 pytz==2012h
 django-dynamicresponse==0.1.5
