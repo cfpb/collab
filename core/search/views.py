@@ -1,6 +1,10 @@
 import re
 import itertools
-from collections import OrderedDict
+
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
@@ -89,7 +93,7 @@ def search_results_json(req, term='', context_models=''):
                                                 r.model_name,
                                                 r.url,
                                                 results_count))
-    
+
     return json_response(all_results)
 
 

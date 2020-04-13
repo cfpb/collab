@@ -66,6 +66,7 @@ Follow these steps to set up collab:
 1. Set up the database:
 
    ```bash
+   mysql.server start
    mysql -u <user> -e 'create database collab'
    python ./manage.py syncdb
    python ./manage.py syncdb --noinput --migrate
@@ -90,6 +91,12 @@ Follow these steps to set up collab:
 
 
 ## Testing
+
+To run tests:
+
+```
+python manage.py test
+```
 
 Models should have a robust set of unit tests.
 

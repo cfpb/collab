@@ -30,7 +30,7 @@ class ViewTest(Exam, WebTest):
         form['title'] = 'Djangonaut'
         form['email'] = 'user12@example.com'
         form['office_phone'] = '5553332222'
-        form.set('team', OrgGroup.objects.all()[0].pk)
+        form.set('org_group', OrgGroup.objects.all()[0].pk)
         form.set('office_location', 'DC123')
         return form
 
